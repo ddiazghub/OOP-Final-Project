@@ -8,12 +8,12 @@ package application.views;
  *
  * @author david
  */
-public class SalesAndPurchases extends javax.swing.JPanel {
+public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
     /**
      * Creates new form Sales
      */
-    public SalesAndPurchases() {
+    public SalesAndPurchasesMenu() {
         initComponents();
     }
 

@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import application.views.Login;
-import application.views.BaseMenu;
+import application.views.MainMenu;
 import application.logic.ViewFactory;
 import application.logic.ApplicationView;
 

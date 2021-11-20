@@ -8,12 +8,12 @@ package application.views;
  *
  * @author david
  */
-public class Administrator extends javax.swing.JPanel {
+public class HomeMenu extends javax.swing.JPanel {
 
     /**
      * Creates new form Home
      */
-    public Administrator() {
+    public HomeMenu() {
         initComponents();
     }
 
@@ -31,7 +31,7 @@ public class Administrator extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(960, 610));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Admin");
+        jLabel1.setText("Inicio");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

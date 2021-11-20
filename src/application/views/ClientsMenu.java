@@ -8,12 +8,12 @@ package application.views;
  *
  * @author david
  */
-public class Clients extends javax.swing.JPanel {
+public class ClientsMenu extends javax.swing.JPanel {
 
     /**
      * Creates new form Home
      */
-    public Clients() {
+    public ClientsMenu() {
         initComponents();
     }
 

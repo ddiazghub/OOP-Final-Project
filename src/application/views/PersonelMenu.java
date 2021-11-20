@@ -8,12 +8,12 @@ package application.views;
  *
  * @author david
  */
-public class Personel extends javax.swing.JPanel {
+public class PersonelMenu extends javax.swing.JPanel {
 
     /**
      * Creates new form Home
      */
-    public Personel() {
+    public PersonelMenu() {
         initComponents();
     }
 

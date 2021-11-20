@@ -8,12 +8,12 @@ package application.views;
  *
  * @author david
  */
-public class Home extends javax.swing.JPanel {
+public class StockMenu extends javax.swing.JPanel {
 
     /**
      * Creates new form Home
      */
-    public Home() {
+    public StockMenu() {
         initComponents();
     }
 
@@ -31,7 +31,7 @@ public class Home extends javax.swing.JPanel {
         setPreferredSize(new java.awt.Dimension(960, 610));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Inicio");
+        jLabel1.setText("Inventario");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

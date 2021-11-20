@@ -21,7 +21,7 @@ public class ViewFactory {
                 break;
            
             case MAIN_MENU:
-                newView = new BaseMenu();
+                newView = new MainMenu();
                 break;
         }
         

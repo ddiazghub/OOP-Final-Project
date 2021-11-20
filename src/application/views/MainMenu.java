@@ -21,7 +21,7 @@ import application.logic.*;
  *
  * @author david
  */
-public class BaseMenu extends javax.swing.JPanel {
+public class MainMenu extends javax.swing.JPanel {
     
     private JPanel currentView;
     
@@ -38,15 +38,15 @@ public class BaseMenu extends javax.swing.JPanel {
     /**
      * Creates new form Login
      */
-    public BaseMenu() {
+    public MainMenu() {
         initComponents();
         
-        this.tabArea.add(new Home(), "home");
-        this.tabArea.add(new SalesAndPurchases(), "sales");
-        this.tabArea.add(new Stock(), "stock");
-        this.tabArea.add(new Personel(), "personel");
-        this.tabArea.add(new Clients(), "clients");
-        this.tabArea.add(new Administrator(), "admin");
+        this.tabArea.add(new HomeMenu(), "home");
+        this.tabArea.add(new SalesAndPurchasesMenu(), "sales");
+        this.tabArea.add(new StockMenu(), "stock");
+        this.tabArea.add(new PersonelMenu(), "personel");
+        this.tabArea.add(new ClientsMenu(), "clients");
+        this.tabArea.add(new AdministratorMenu(), "admin");
         
         for (ListMenuItemData item : this.menuItems) {
             MenuItem newItem = new MenuItem(item.icon, item.text);
