@@ -43,6 +43,10 @@ public class BaseMenu extends javax.swing.JPanel {
         
         this.tabArea.add(new Home(), "home");
         this.tabArea.add(new SalesAndPurchases(), "sales");
+        this.tabArea.add(new Stock(), "stock");
+        this.tabArea.add(new Personel(), "personel");
+        this.tabArea.add(new Clients(), "clients");
+        this.tabArea.add(new Administrator(), "admin");
         
         for (ListMenuItemData item : this.menuItems) {
             MenuItem newItem = new MenuItem(item.icon, item.text);
