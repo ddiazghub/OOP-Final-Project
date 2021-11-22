@@ -4,19 +4,84 @@
  */
 package application.views;
 
+import application.DesktopApplication;
+import application.components.ClientListItem;
+import application.components.PersonelListItem;
+import application.logic.PersonelType;
+import java.awt.CardLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import application.logic.Client;
+import java.time.ZoneId;
+import application.logic.Helpers;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author david
  */
 public class ClientsMenu extends javax.swing.JPanel {
-
+    private Client client;
+    
     /**
      * Creates new form Home
      */
     public ClientsMenu() {
         initComponents();
+        this.client = null;
+        
+        this.getAllClients();
     }
 
+    public void getAllClients() {
+        this.clientsPanel.removeAll();
+        final ClientsMenu menu = this;
+        
+        for (Client c : DesktopApplication.getInstance().getClients()) {
+            ClientListItem item = new ClientListItem(c);
+            this.clientsPanel.add(item);
+
+            item.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent evt) {
+                    menu.clientListItemMousePressed(evt);
+                }
+            });
+        }
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+        this.refresh();
+    }
+    
+    public void refresh() {
+        this.idLabel.setText(Integer.toString(client.getId()));
+        this.nameLabel.setText(client.getName());
+        this.emailLabel.setText(client.getEmail());
+        this.phoneNumberLabel.setText(Integer.toString(client.getPhoneNumber()));
+        this.birthdayLabel.setText(Helpers.formatDate(this.client.getBirthDay()));
+        this.typeLabel.setText(client.getType().toString());
+        this.addressLabel.setText(this.client.getStreetAddress());
+        this.cityLabel.setText(this.client.getCity());
+    }
+    
+    public void clientListItemMousePressed(MouseEvent evt) {
+        this.setClient(((ClientListItem) evt.getComponent()).getClient());
+        ((CardLayout) this.getLayout()).show(this, "see");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,33 +91,532 @@ public class ClientsMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        clientsHome = new javax.swing.JPanel();
+        editButton2 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        searchTextField1 = new javax.swing.JTextField();
+        addProfileButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        clientsPanel = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        label7 = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jPanel14 = new javax.swing.JPanel();
+        label8 = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JSeparator();
+        jPanel15 = new javax.swing.JPanel();
+        label9 = new javax.swing.JLabel();
+        jSeparator7 = new javax.swing.JSeparator();
+        jPanel16 = new javax.swing.JPanel();
+        label10 = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JSeparator();
+        jPanel17 = new javax.swing.JPanel();
+        label11 = new javax.swing.JLabel();
+        addClient = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        cancelButton = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        emailTextField = new javax.swing.JTextField();
+        phoneNumberTextField = new javax.swing.JTextField();
+        nameTextField = new javax.swing.JTextField();
+        confirmButton = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        birthdayChooser = new com.toedter.calendar.JDateChooser();
+        addressTextField1 = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel15 = new javax.swing.JLabel();
+        cityTextField = new javax.swing.JTextField();
+        seeClient = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        deleteButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        birthdayLabel = new javax.swing.JLabel();
+        typeLabel = new javax.swing.JLabel();
+        phoneNumberLabel = new javax.swing.JLabel();
+        returnButton = new javax.swing.JButton();
+        idLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        addressLabel = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        cityLabel = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(960, 610));
+        setLayout(new java.awt.CardLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Clientes");
+        clientsHome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(383, 383, 383)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(399, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(223, 223, 223)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(290, Short.MAX_VALUE))
-        );
+        editButton2.setBackground(new java.awt.Color(42, 39, 41));
+        editButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        editButton2.setForeground(new java.awt.Color(204, 204, 204));
+        editButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/search.png"))); // NOI18N
+        editButton2.setText("Buscar");
+        editButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                editButton2MouseReleased(evt);
+            }
+        });
+        editButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButton2ActionPerformed(evt);
+            }
+        });
+        clientsHome.add(editButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 110, 110, 50));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Buscar Por...", "ID", "Nombre" }));
+        clientsHome.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 170, 30));
+
+        searchTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        searchTextField1.setToolTipText("");
+        searchTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextField1ActionPerformed(evt);
+            }
+        });
+        clientsHome.add(searchTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 350, 30));
+
+        addProfileButton.setBackground(new java.awt.Color(42, 39, 41));
+        addProfileButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        addProfileButton.setForeground(new java.awt.Color(204, 204, 204));
+        addProfileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/add.png"))); // NOI18N
+        addProfileButton.setText("Añadir");
+        addProfileButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                addProfileButtonMouseReleased(evt);
+            }
+        });
+        addProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProfileButtonActionPerformed(evt);
+            }
+        });
+        clientsHome.add(addProfileButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 110, 110, 50));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel5.setText("Gestionar Clientes");
+        clientsHome.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 350, 40));
+
+        clientsPanel.setBackground(new java.awt.Color(153, 153, 153));
+        clientsPanel.setLayout(new javax.swing.BoxLayout(clientsPanel, javax.swing.BoxLayout.PAGE_AXIS));
+        jScrollPane2.setViewportView(clientsPanel);
+
+        clientsHome.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 260, 800, 280));
+
+        jPanel3.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel3.setPreferredSize(new java.awt.Dimension(799, 50));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel13.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel13.setMaximumSize(new java.awt.Dimension(120, 50));
+        jPanel13.setMinimumSize(new java.awt.Dimension(120, 50));
+        jPanel13.setPreferredSize(new java.awt.Dimension(120, 50));
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label7.setForeground(new java.awt.Color(204, 204, 204));
+        label7.setText("ID");
+        jPanel13.add(label7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+
+        jPanel3.add(jPanel13);
+
+        jSeparator5.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator5);
+
+        jPanel14.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel14.setMaximumSize(new java.awt.Dimension(160, 50));
+        jPanel14.setMinimumSize(new java.awt.Dimension(160, 50));
+        jPanel14.setPreferredSize(new java.awt.Dimension(160, 50));
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label8.setForeground(new java.awt.Color(204, 204, 204));
+        label8.setText("Nombre");
+        jPanel14.add(label8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jPanel3.add(jPanel14);
+
+        jSeparator6.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator6);
+
+        jPanel15.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel15.setMaximumSize(new java.awt.Dimension(180, 50));
+        jPanel15.setMinimumSize(new java.awt.Dimension(180, 50));
+        jPanel15.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label9.setForeground(new java.awt.Color(204, 204, 204));
+        label9.setText("Correo Electrónico");
+        jPanel15.add(label9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+
+        jPanel3.add(jPanel15);
+
+        jSeparator7.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator7);
+
+        jPanel16.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel16.setMaximumSize(new java.awt.Dimension(180, 50));
+        jPanel16.setMinimumSize(new java.awt.Dimension(180, 50));
+        jPanel16.setName(""); // NOI18N
+        jPanel16.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label10.setForeground(new java.awt.Color(204, 204, 204));
+        label10.setText("Tipo");
+        jPanel16.add(label10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, -1));
+
+        jPanel3.add(jPanel16);
+
+        jSeparator8.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator8);
+
+        jPanel17.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel17.setMaximumSize(new java.awt.Dimension(140, 50));
+        jPanel17.setMinimumSize(new java.awt.Dimension(140, 50));
+        jPanel17.setPreferredSize(new java.awt.Dimension(140, 50));
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label11.setForeground(new java.awt.Color(204, 204, 204));
+        label11.setText("Número de teléfono");
+        jPanel17.add(label11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, -1, -1));
+
+        jPanel3.add(jPanel17);
+
+        clientsHome.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 210, -1, -1));
+
+        add(clientsHome, "clients");
+
+        addClient.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel8.setText("Añadir Cliente");
+        addClient.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 280, 40));
+
+        cancelButton.setBackground(new java.awt.Color(42, 39, 41));
+        cancelButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(204, 204, 204));
+        cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        addClient.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 500, 160, 50));
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setText("Correo Electrónico:");
+        addClient.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 160, 20));
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel13.setText("Nombre Completo:");
+        addClient.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 160, 150, 20));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel14.setText("Número de Teléfono:");
+        addClient.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 160, 350, 20));
+
+        emailTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        emailTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailTextFieldActionPerformed(evt);
+            }
+        });
+        addClient.add(emailTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 360, 350, 30));
+
+        phoneNumberTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        addClient.add(phoneNumberTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 180, 350, 30));
+
+        nameTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        nameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameTextFieldActionPerformed(evt);
+            }
+        });
+        addClient.add(nameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 180, 350, 30));
+
+        confirmButton.setBackground(new java.awt.Color(42, 39, 41));
+        confirmButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirmButton.setForeground(new java.awt.Color(204, 204, 204));
+        confirmButton.setText("Añadir Empleado");
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
+        addClient.add(confirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel19.setText("Fecha de Nacimiento:");
+        addClient.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, 150, 20));
+        addClient.add(birthdayChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 350, 30));
+
+        addressTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        addressTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addressTextField1ActionPerformed(evt);
+            }
+        });
+        addClient.add(addressTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 270, 350, 30));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setText("Dirección de Residencia");
+        addClient.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 250, 160, 20));
+
+        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel15.setText("Ciudad");
+        addClient.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 340, 160, 20));
+
+        cityTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cityTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cityTextFieldActionPerformed(evt);
+            }
+        });
+        addClient.add(cityTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 360, 350, 30));
+
+        add(addClient, "add");
+
+        seeClient.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel4.setText("Ver Cliente");
+        seeClient.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 210, 40));
+
+        deleteButton.setBackground(new java.awt.Color(42, 39, 41));
+        deleteButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(204, 204, 204));
+        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/delete.png"))); // NOI18N
+        deleteButton.setText("Eliminar");
+        deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseReleased(evt);
+            }
+        });
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        seeClient.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 500, 160, 50));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Correo Electrónico:");
+        seeClient.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 310, 160, 20));
+
+        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel36.setText("Fecha de Nacimiento:");
+        seeClient.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 160, 20));
+
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel38.setText("Número de Teléfono:");
+        seeClient.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 380, 350, 20));
+
+        emailLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        emailLabel.setText("NULL");
+        seeClient.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 330, 360, 20));
+
+        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameLabel.setText("David Eduardo Diaz de Moya");
+        seeClient.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 130, 520, 30));
+
+        birthdayLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        birthdayLabel.setText("NULL");
+        seeClient.add(birthdayLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 260, 390, 20));
+
+        typeLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        typeLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        typeLabel.setText("Cliente Platino");
+        seeClient.add(typeLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 160, 310, 20));
+
+        phoneNumberLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        phoneNumberLabel.setText("NULL");
+        seeClient.add(phoneNumberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 400, 360, 20));
+
+        returnButton.setBackground(new java.awt.Color(42, 39, 41));
+        returnButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        returnButton.setForeground(new java.awt.Color(204, 204, 204));
+        returnButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/return.png"))); // NOI18N
+        returnButton.setText("Volver");
+        returnButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                returnButtonMouseReleased(evt);
+            }
+        });
+        returnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnButtonActionPerformed(evt);
+            }
+        });
+        seeClient.add(returnButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 160, 50));
+
+        idLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        idLabel.setText("NULL");
+        seeClient.add(idLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 260, 340, 20));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setText("ID:");
+        seeClient.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 240, 160, 20));
+
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel37.setText("Dirección de Residencia:");
+        seeClient.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 310, 320, 20));
+
+        addressLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        addressLabel.setText("NULL");
+        seeClient.add(addressLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 330, 390, 20));
+
+        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel39.setText("Ciudad:");
+        seeClient.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 380, 160, 20));
+
+        cityLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        cityLabel.setText("NULL");
+        seeClient.add(cityLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 400, 390, 20));
+
+        add(seeClient, "see");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButton2MouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButton2MouseReleased
+
+    private void editButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButton2ActionPerformed
+
+    private void searchTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTextField1ActionPerformed
+
+    private void addProfileButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProfileButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addProfileButtonMouseReleased
+
+    private void addProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProfileButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "add");
+        this.client = null;
+    }//GEN-LAST:event_addProfileButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "clients");
+        this.client = null;
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailTextFieldActionPerformed
+
+    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextFieldActionPerformed
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        ArrayList<Client> clients = DesktopApplication.getInstance().getClients();
+        clients.add(new Client(clients.size(), this.addressTextField1.getText(), this.cityTextField.getText(), this.nameTextField.getText(), this.birthdayChooser.getDate(), Integer.parseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText()));
+        ((CardLayout) this.getLayout()).show(this, "clients");
+        this.getAllClients();
+        javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el Cliente");
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void deleteButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseReleased
+
+    }//GEN-LAST:event_deleteButtonMouseReleased
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        DesktopApplication.getInstance().getClients().remove(this.client);
+        this.client = null;
+        ((CardLayout) this.getLayout()).show(this, "clients");
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void returnButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnButtonMouseReleased
+
+    }//GEN-LAST:event_returnButtonMouseReleased
+
+    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "clients");
+    }//GEN-LAST:event_returnButtonActionPerformed
+
+    private void addressTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addressTextField1ActionPerformed
+
+    private void cityTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cityTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cityTextFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel addClient;
+    private javax.swing.JButton addProfileButton;
+    private javax.swing.JLabel addressLabel;
+    private javax.swing.JTextField addressTextField1;
+    private com.toedter.calendar.JDateChooser birthdayChooser;
+    private javax.swing.JLabel birthdayLabel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JLabel cityLabel;
+    private javax.swing.JTextField cityTextField;
+    private javax.swing.JPanel clientsHome;
+    private javax.swing.JPanel clientsPanel;
+    private javax.swing.JButton confirmButton;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton editButton2;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JLabel idLabel;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JLabel label10;
+    private javax.swing.JLabel label11;
+    private javax.swing.JLabel label7;
+    private javax.swing.JLabel label8;
+    private javax.swing.JLabel label9;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JLabel phoneNumberLabel;
+    private javax.swing.JTextField phoneNumberTextField;
+    private javax.swing.JButton returnButton;
+    private javax.swing.JTextField searchTextField1;
+    private javax.swing.JPanel seeClient;
+    private javax.swing.JLabel typeLabel;
     // End of variables declaration//GEN-END:variables
 }

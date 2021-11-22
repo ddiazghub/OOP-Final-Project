@@ -4,19 +4,91 @@
  */
 package application.views;
 
+import application.DesktopApplication;
+import application.components.PersonelListItem;
+import java.awt.CardLayout;
+import application.components.ProfileListItem;
+import application.logic.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import application.logic.MySecurityManager;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author david
  */
 public class AdministratorMenu extends javax.swing.JPanel {
 
+    private Profile profile;
+    private Personel profileEmployee;
+    
     /**
      * Creates new form Home
      */
     public AdministratorMenu() {
         initComponents();
+        
+        this.profileEmployee = null;
+        this.profile = null;
+        this.getAllProfiles();
     }
 
+    public void getAllProfiles() {
+        this.profilesPanel.removeAll();
+        final AdministratorMenu menu = this;
+        
+        for (Profile profile : DesktopApplication.getInstance().getProfiles()) {
+            ProfileListItem item = new ProfileListItem(profile);
+            this.profilesPanel.add(item);
+
+            item.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent evt) {
+                    menu.profileListItemMousePressed(evt);
+                }
+            });
+        }
+    }
+    
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+        this.refresh();
+    }
+    
+    public void refresh() {
+        this.imageField1.setIcon(Helpers.readIconFromFile(new File(this.profile.getPersonel().getImagePath())));
+        this.imageField2.setIcon(Helpers.readIconFromFile(new File(this.profile.getPersonel().getImagePath())));
+        this.idLabel.setText(Integer.toString(this.profile.getId()));
+        this.nameLabel.setText(this.profile.getPersonel().getName());
+        this.emailLabel.setText(this.profile.getPersonel().getEmail());
+        this.phoneNumberLabel.setText(Integer.toString(this.profile.getPersonel().getPhoneNumber()));
+        this.birthdayLabel.setText(Helpers.formatDate(this.profile.getPersonel().getBirthDay()));
+        this.admissionDateLabel.setText(Helpers.formatDate(this.profile.getPersonel().getAdmissionDate()));
+        this.jobLabel.setText(this.profile.getPersonel().getType().toString());
+        this.roleLabel.setText(this.profile.getRole().toString());
+        this.usernameLabel.setText(this.profile.getUsername());
+        this.passwordField.setText("");
+        this.confirmationField.setText("");
+        this.passwordField1.setText("");
+        this.confirmationField1.setText("");
+        this.nameTextField1.setText(this.profile.getPersonel().getName());
+        this.emailTextField1.setText(this.profile.getPersonel().getEmail());
+        this.phoneNumberTextField1.setText(Integer.toString(this.profile.getPersonel().getPhoneNumber()));
+        this.birthdayTextField1.setText(Helpers.formatDate(this.profile.getPersonel().getBirthDay()));
+        this.profileRoleSelect.setSelectedItem(this.profile.getRole().toString());
+        this.usernameTextField1.setText(this.profile.getUsername());
+    }
+
+    public void profileListItemMousePressed(MouseEvent evt) {
+        this.setProfile(((ProfileListItem) evt.getComponent()).getProfile());
+        ((CardLayout) this.getLayout()).show(this, "seeProfile");
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,33 +98,840 @@ public class AdministratorMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        adminHome = new javax.swing.JPanel();
+        editButton2 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        searchTextField1 = new javax.swing.JTextField();
+        addProfileButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        profilesPanel = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        label7 = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jPanel14 = new javax.swing.JPanel();
+        label8 = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JSeparator();
+        jPanel15 = new javax.swing.JPanel();
+        label9 = new javax.swing.JLabel();
+        jSeparator7 = new javax.swing.JSeparator();
+        jPanel16 = new javax.swing.JPanel();
+        label10 = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JSeparator();
+        jPanel17 = new javax.swing.JPanel();
+        label11 = new javax.swing.JLabel();
+        createProfile = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        cancelButton = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        imageField = new javax.swing.JLabel();
+        usernameTextField = new javax.swing.JTextField();
+        jLabel16 = new javax.swing.JLabel();
+        emailTextField = new javax.swing.JTextField();
+        phoneNumberTextField = new javax.swing.JTextField();
+        birthdayTextField = new javax.swing.JTextField();
+        nameTextField = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        confirmButton = new javax.swing.JButton();
+        confirmationField = new javax.swing.JPasswordField();
+        passwordField = new javax.swing.JPasswordField();
+        employeeIdField = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
+        searchEmployeeButton = new javax.swing.JButton();
+        jLabel19 = new javax.swing.JLabel();
+        profileRoleSelect = new javax.swing.JComboBox<>();
+        editProfile = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        cancelButton1 = new javax.swing.JButton();
+        jLabel20 = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jLabel22 = new javax.swing.JLabel();
+        jLabel23 = new javax.swing.JLabel();
+        imageField1 = new javax.swing.JLabel();
+        usernameTextField1 = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        emailTextField1 = new javax.swing.JTextField();
+        phoneNumberTextField1 = new javax.swing.JTextField();
+        birthdayTextField1 = new javax.swing.JTextField();
+        nameTextField1 = new javax.swing.JTextField();
+        jLabel26 = new javax.swing.JLabel();
+        confirmButton1 = new javax.swing.JButton();
+        confirmationField1 = new javax.swing.JPasswordField();
+        passwordField1 = new javax.swing.JPasswordField();
+        jLabel27 = new javax.swing.JLabel();
+        profileRoleSelect1 = new javax.swing.JComboBox<>();
+        seeProfile = new javax.swing.JPanel();
+        imageField2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        deleteButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        usernameLabel = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        admissionDateLabel = new javax.swing.JLabel();
+        birthdayLabel = new javax.swing.JLabel();
+        jobLabel = new javax.swing.JLabel();
+        phoneNumberLabel = new javax.swing.JLabel();
+        jLabel39 = new javax.swing.JLabel();
+        roleLabel = new javax.swing.JLabel();
+        returnButton = new javax.swing.JButton();
+        editButton = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        idLabel = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(960, 610));
+        setLayout(new java.awt.CardLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Admin");
+        adminHome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(383, 383, 383)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(399, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(223, 223, 223)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(290, Short.MAX_VALUE))
-        );
+        editButton2.setBackground(new java.awt.Color(42, 39, 41));
+        editButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        editButton2.setForeground(new java.awt.Color(204, 204, 204));
+        editButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/search.png"))); // NOI18N
+        editButton2.setText("Buscar");
+        editButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                editButton2MouseReleased(evt);
+            }
+        });
+        editButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButton2ActionPerformed(evt);
+            }
+        });
+        adminHome.add(editButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 110, 110, 50));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Buscar Por...", "Nombre de Usuario", "ID", "Nombre de Personal" }));
+        adminHome.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 170, 30));
+
+        searchTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        searchTextField1.setToolTipText("");
+        searchTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextField1ActionPerformed(evt);
+            }
+        });
+        adminHome.add(searchTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 350, 30));
+
+        addProfileButton.setBackground(new java.awt.Color(42, 39, 41));
+        addProfileButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        addProfileButton.setForeground(new java.awt.Color(204, 204, 204));
+        addProfileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/add.png"))); // NOI18N
+        addProfileButton.setText("Añadir");
+        addProfileButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                addProfileButtonMouseReleased(evt);
+            }
+        });
+        addProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProfileButtonActionPerformed(evt);
+            }
+        });
+        adminHome.add(addProfileButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 110, 110, 50));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel5.setText("Gestionar Perfiles");
+        adminHome.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 350, 40));
+
+        profilesPanel.setBackground(new java.awt.Color(153, 153, 153));
+        profilesPanel.setLayout(new javax.swing.BoxLayout(profilesPanel, javax.swing.BoxLayout.PAGE_AXIS));
+        jScrollPane2.setViewportView(profilesPanel);
+
+        adminHome.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 260, 800, 280));
+
+        jPanel3.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel3.setPreferredSize(new java.awt.Dimension(799, 50));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel13.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel13.setMaximumSize(new java.awt.Dimension(120, 50));
+        jPanel13.setMinimumSize(new java.awt.Dimension(120, 50));
+        jPanel13.setPreferredSize(new java.awt.Dimension(120, 50));
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label7.setForeground(new java.awt.Color(204, 204, 204));
+        label7.setText("ID");
+        jPanel13.add(label7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+
+        jPanel3.add(jPanel13);
+
+        jSeparator5.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator5);
+
+        jPanel14.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel14.setMaximumSize(new java.awt.Dimension(160, 50));
+        jPanel14.setMinimumSize(new java.awt.Dimension(160, 50));
+        jPanel14.setPreferredSize(new java.awt.Dimension(160, 50));
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label8.setForeground(new java.awt.Color(204, 204, 204));
+        label8.setText("Nombre de Usuario");
+        jPanel14.add(label8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        jPanel3.add(jPanel14);
+
+        jSeparator6.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator6);
+
+        jPanel15.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel15.setMaximumSize(new java.awt.Dimension(180, 50));
+        jPanel15.setMinimumSize(new java.awt.Dimension(180, 50));
+        jPanel15.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label9.setForeground(new java.awt.Color(204, 204, 204));
+        label9.setText("Correo Electrónico");
+        jPanel15.add(label9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+
+        jPanel3.add(jPanel15);
+
+        jSeparator7.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator7);
+
+        jPanel16.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel16.setMaximumSize(new java.awt.Dimension(180, 50));
+        jPanel16.setMinimumSize(new java.awt.Dimension(180, 50));
+        jPanel16.setName(""); // NOI18N
+        jPanel16.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label10.setForeground(new java.awt.Color(204, 204, 204));
+        label10.setText("Cargo");
+        jPanel16.add(label10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, -1));
+
+        jPanel3.add(jPanel16);
+
+        jSeparator8.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator8);
+
+        jPanel17.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel17.setMaximumSize(new java.awt.Dimension(140, 50));
+        jPanel17.setMinimumSize(new java.awt.Dimension(140, 50));
+        jPanel17.setPreferredSize(new java.awt.Dimension(140, 50));
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label11.setForeground(new java.awt.Color(204, 204, 204));
+        label11.setText("Rol");
+        jPanel17.add(label11, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jPanel3.add(jPanel17);
+
+        adminHome.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 210, -1, -1));
+
+        add(adminHome, "administratorHome");
+
+        createProfile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel8.setText("Crear Perfil");
+        createProfile.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 170, 40));
+
+        cancelButton.setBackground(new java.awt.Color(42, 39, 41));
+        cancelButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(204, 204, 204));
+        cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        createProfile.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 500, 160, 50));
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setText("Correo Electrónico:");
+        createProfile.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 160, 20));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setText("Fecha de Nacimiento:");
+        createProfile.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 430, 160, 20));
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel13.setText("Nombre Completo:");
+        createProfile.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 500, 150, 20));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel14.setText("Número de Teléfono:");
+        createProfile.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 370, 350, 20));
+
+        imageField.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/008.png"))); // NOI18N
+        createProfile.add(imageField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
+
+        usernameTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        createProfile.add(usernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 410, 30));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel16.setText("Nombre de Usuario:");
+        createProfile.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 60, 150, 20));
+
+        emailTextField.setEditable(false);
+        emailTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        emailTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailTextFieldActionPerformed(evt);
+            }
+        });
+        createProfile.add(emailTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 330, 410, 30));
+
+        phoneNumberTextField.setEditable(false);
+        phoneNumberTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        createProfile.add(phoneNumberTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 390, 410, 30));
+
+        birthdayTextField.setEditable(false);
+        birthdayTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        createProfile.add(birthdayTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, 410, 30));
+
+        nameTextField.setEditable(false);
+        nameTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        nameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameTextFieldActionPerformed(evt);
+            }
+        });
+        createProfile.add(nameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 520, 370, 30));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel17.setText("Contraseña:");
+        createProfile.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 120, 150, 20));
+
+        confirmButton.setBackground(new java.awt.Color(42, 39, 41));
+        confirmButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirmButton.setForeground(new java.awt.Color(204, 204, 204));
+        confirmButton.setText("Crear Perfil");
+        confirmButton.setEnabled(false);
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
+        createProfile.add(confirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
+
+        confirmationField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        confirmationField.setPreferredSize(new java.awt.Dimension(410, 30));
+        createProfile.add(confirmationField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, -1, -1));
+
+        passwordField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        passwordField.setPreferredSize(new java.awt.Dimension(410, 30));
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordFieldActionPerformed(evt);
+            }
+        });
+        createProfile.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, -1, -1));
+
+        employeeIdField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        employeeIdField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                employeeIdFieldActionPerformed(evt);
+            }
+        });
+        createProfile.add(employeeIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 270, 260, 30));
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel18.setText("Rol del Perfil:");
+        createProfile.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 220, 110, 20));
+
+        searchEmployeeButton.setBackground(new java.awt.Color(42, 39, 41));
+        searchEmployeeButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        searchEmployeeButton.setForeground(new java.awt.Color(204, 204, 204));
+        searchEmployeeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/search.png"))); // NOI18N
+        searchEmployeeButton.setText("Buscar");
+        searchEmployeeButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                searchEmployeeButtonMouseReleased(evt);
+            }
+        });
+        searchEmployeeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchEmployeeButtonActionPerformed(evt);
+            }
+        });
+        createProfile.add(searchEmployeeButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 260, 130, 40));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel19.setText("ID del Empleado Asociado:");
+        createProfile.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 210, 20));
+
+        profileRoleSelect.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        profileRoleSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuario", "Administrador" }));
+        createProfile.add(profileRoleSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 213, 290, 30));
+
+        add(createProfile, "createProfile");
+
+        editProfile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel9.setText("Editar Perfil");
+        editProfile.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 170, 40));
+
+        cancelButton1.setBackground(new java.awt.Color(42, 39, 41));
+        cancelButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cancelButton1.setForeground(new java.awt.Color(204, 204, 204));
+        cancelButton1.setText("Cancelar");
+        cancelButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButton1ActionPerformed(evt);
+            }
+        });
+        editProfile.add(cancelButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 500, 160, 50));
+
+        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel20.setText("Correo Electrónico:");
+        editProfile.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 280, 160, 20));
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel21.setText("Fecha de Nacimiento:");
+        editProfile.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 400, 160, 20));
+
+        jLabel22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel22.setText("Nombre Completo:");
+        editProfile.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 500, 150, 20));
+
+        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel23.setText("Número de Teléfono:");
+        editProfile.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, 350, 20));
+
+        imageField1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/008.png"))); // NOI18N
+        editProfile.add(imageField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
+
+        usernameTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        editProfile.add(usernameTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 410, 30));
+
+        jLabel25.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel25.setText("Nombre de Usuario:");
+        editProfile.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 60, 150, 20));
+
+        emailTextField1.setEditable(false);
+        emailTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        emailTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailTextField1ActionPerformed(evt);
+            }
+        });
+        editProfile.add(emailTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 300, 410, 30));
+
+        phoneNumberTextField1.setEditable(false);
+        phoneNumberTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        editProfile.add(phoneNumberTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 360, 410, 30));
+
+        birthdayTextField1.setEditable(false);
+        birthdayTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        editProfile.add(birthdayTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 420, 410, 30));
+
+        nameTextField1.setEditable(false);
+        nameTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        nameTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameTextField1ActionPerformed(evt);
+            }
+        });
+        editProfile.add(nameTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 520, 370, 30));
+
+        jLabel26.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel26.setText("Contraseña:");
+        editProfile.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 120, 150, 20));
+
+        confirmButton1.setBackground(new java.awt.Color(42, 39, 41));
+        confirmButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirmButton1.setForeground(new java.awt.Color(204, 204, 204));
+        confirmButton1.setText("Editar Perfil");
+        confirmButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButton1ActionPerformed(evt);
+            }
+        });
+        editProfile.add(confirmButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
+
+        confirmationField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        confirmationField1.setPreferredSize(new java.awt.Dimension(410, 30));
+        editProfile.add(confirmationField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, -1, -1));
+
+        passwordField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        passwordField1.setPreferredSize(new java.awt.Dimension(410, 30));
+        passwordField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordField1ActionPerformed(evt);
+            }
+        });
+        editProfile.add(passwordField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 140, -1, -1));
+
+        jLabel27.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel27.setText("Rol del Perfil:");
+        editProfile.add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 220, 110, 20));
+
+        profileRoleSelect1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        profileRoleSelect1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuario", "Administrador" }));
+        editProfile.add(profileRoleSelect1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 213, 290, 30));
+
+        add(editProfile, "editProfile");
+
+        seeProfile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        imageField2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/008.png"))); // NOI18N
+        seeProfile.add(imageField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel4.setText("Ver Perfil");
+        seeProfile.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 120, 40));
+
+        deleteButton.setBackground(new java.awt.Color(42, 39, 41));
+        deleteButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(204, 204, 204));
+        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/delete.png"))); // NOI18N
+        deleteButton.setText("Eliminar");
+        deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseReleased(evt);
+            }
+        });
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        seeProfile.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 500, 160, 50));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setText("Nombre de Usuario:");
+        seeProfile.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 140, 150, 20));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Correo Electrónico:");
+        seeProfile.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 260, 160, 20));
+
+        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel36.setText("Fecha de Nacimiento:");
+        seeProfile.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 380, 160, 20));
+
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel37.setText("Fecha de Ingreso:");
+        seeProfile.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 440, 150, 20));
+
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel38.setText("Número de Teléfono:");
+        seeProfile.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 320, 350, 20));
+
+        usernameLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        usernameLabel.setText("NULL");
+        seeProfile.add(usernameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 160, 460, 20));
+
+        emailLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        emailLabel.setText("NULL");
+        seeProfile.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 280, 460, 20));
+
+        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameLabel.setText("David Eduardo Diaz de Moya");
+        seeProfile.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 520, 30));
+
+        admissionDateLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        admissionDateLabel.setText("NULL");
+        seeProfile.add(admissionDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 460, 480, 20));
+
+        birthdayLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        birthdayLabel.setText("NULL");
+        seeProfile.add(birthdayLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 400, 470, 20));
+
+        jobLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jobLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jobLabel.setText("Gerente");
+        seeProfile.add(jobLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 530, 310, 20));
+
+        phoneNumberLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        phoneNumberLabel.setText("NULL");
+        seeProfile.add(phoneNumberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 340, 490, 20));
+
+        jLabel39.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel39.setText("Rol del Perfil:");
+        seeProfile.add(jLabel39, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 200, 160, 20));
+
+        roleLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        roleLabel.setText("NULL");
+        seeProfile.add(roleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 220, 460, 20));
+
+        returnButton.setBackground(new java.awt.Color(42, 39, 41));
+        returnButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        returnButton.setForeground(new java.awt.Color(204, 204, 204));
+        returnButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/return.png"))); // NOI18N
+        returnButton.setText("Volver");
+        returnButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                returnButtonMouseReleased(evt);
+            }
+        });
+        returnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnButtonActionPerformed(evt);
+            }
+        });
+        seeProfile.add(returnButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 160, 50));
+
+        editButton.setBackground(new java.awt.Color(42, 39, 41));
+        editButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        editButton.setForeground(new java.awt.Color(204, 204, 204));
+        editButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/edit.png"))); // NOI18N
+        editButton.setText("Editar");
+        editButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                editButtonMouseReleased(evt);
+            }
+        });
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+        seeProfile.add(editButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel3.setText("ID:");
+        seeProfile.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 80, 150, 20));
+
+        idLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        idLabel.setText("NULL");
+        seeProfile.add(idLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 100, 460, 20));
+
+        add(seeProfile, "seeProfile");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButton2MouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButton2MouseReleased
+
+    private void editButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButton2ActionPerformed
+
+    private void searchTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTextField1ActionPerformed
+
+    private void addProfileButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProfileButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addProfileButtonMouseReleased
+
+    private void addProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProfileButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "createProfile");
+        this.profileEmployee = null;
+    }//GEN-LAST:event_addProfileButtonActionPerformed
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        DesktopApplication.getInstance().getProfiles().add(new Profile(this.usernameTextField.getText(), MySecurityManager.getInstance().hash(this.passwordField.getPassword()), this.profileEmployee, ProfileRole.valueOf((String) this.profileRoleSelect.getSelectedItem())));
+        javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el perfil");
+        this.getAllProfiles();
+        ((CardLayout) this.getLayout()).show(this, "administratorHome");
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "administratorHome");
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextFieldActionPerformed
+
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailTextFieldActionPerformed
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
+    private void employeeIdFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_employeeIdFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_employeeIdFieldActionPerformed
+
+    private void searchEmployeeButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchEmployeeButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchEmployeeButtonMouseReleased
+
+    private void searchEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchEmployeeButtonActionPerformed
+        Personel profilePersonel = null;
+        
+        for (Personel employee : DesktopApplication.getInstance().getPersonel()) {
+            if (employee.getId() == Integer.parseInt(this.employeeIdField.getText())) {
+                profilePersonel = employee;
+                break;
+            }
+        }
+        
+        if (profilePersonel == null)
+        {
+            JOptionPane.showMessageDialog(this, "El empleado no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        this.imageField.setIcon(Helpers.readIconFromFile(new File(profilePersonel.getImagePath())));
+        this.profileEmployee = profilePersonel;
+        this.nameTextField.setText(profilePersonel.getName());
+        this.emailTextField.setText(profilePersonel.getEmail());
+        this.phoneNumberTextField.setText(Integer.toString(profilePersonel.getPhoneNumber()));
+        this.birthdayTextField.setText(Helpers.formatDate(profilePersonel.getBirthDay()));
+        this.confirmButton.setEnabled(true);
+    }//GEN-LAST:event_searchEmployeeButtonActionPerformed
+
+    private void cancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButton1ActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "seeProfile");
+    }//GEN-LAST:event_cancelButton1ActionPerformed
+
+    private void emailTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailTextField1ActionPerformed
+
+    private void nameTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextField1ActionPerformed
+
+    private void confirmButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButton1ActionPerformed
+        if (this.passwordField1.getPassword().length > 0) {
+            if (!MySecurityManager.getInstance().comparePasswords(this.passwordField1.getPassword(), this.confirmationField1.getPassword())) {
+                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+        this.profile.setUsername(this.usernameTextField1.getText());
+        this.profile.setRole(ProfileRole.valueOf((String) this.profileRoleSelect1.getSelectedItem()));
+       
+        ((CardLayout) this.getLayout()).show(this, "seeProfile");
+    }//GEN-LAST:event_confirmButton1ActionPerformed
+
+    private void passwordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordField1ActionPerformed
+
+    private void deleteButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseReleased
+
+    }//GEN-LAST:event_deleteButtonMouseReleased
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        DesktopApplication.getInstance().getProfiles().remove(this.profile);
+        this.profile = null;
+        ((CardLayout) this.getLayout()).show(this, "administratorHome");
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void returnButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnButtonMouseReleased
+
+    }//GEN-LAST:event_returnButtonMouseReleased
+
+    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "administratorHome");
+    }//GEN-LAST:event_returnButtonActionPerformed
+
+    private void editButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButtonMouseReleased
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addProfileButton;
+    private javax.swing.JPanel adminHome;
+    private javax.swing.JLabel admissionDateLabel;
+    private javax.swing.JLabel birthdayLabel;
+    private javax.swing.JTextField birthdayTextField;
+    private javax.swing.JTextField birthdayTextField1;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton cancelButton1;
+    private javax.swing.JButton confirmButton;
+    private javax.swing.JButton confirmButton1;
+    private javax.swing.JPasswordField confirmationField;
+    private javax.swing.JPasswordField confirmationField1;
+    private javax.swing.JPanel createProfile;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton editButton;
+    private javax.swing.JButton editButton2;
+    private javax.swing.JPanel editProfile;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JTextField emailTextField1;
+    private javax.swing.JTextField employeeIdField;
+    private javax.swing.JLabel idLabel;
+    private javax.swing.JLabel imageField;
+    private javax.swing.JLabel imageField1;
+    private javax.swing.JLabel imageField2;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel39;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JLabel jobLabel;
+    private javax.swing.JLabel label10;
+    private javax.swing.JLabel label11;
+    private javax.swing.JLabel label7;
+    private javax.swing.JLabel label8;
+    private javax.swing.JLabel label9;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JTextField nameTextField1;
+    private javax.swing.JPasswordField passwordField;
+    private javax.swing.JPasswordField passwordField1;
+    private javax.swing.JLabel phoneNumberLabel;
+    private javax.swing.JTextField phoneNumberTextField;
+    private javax.swing.JTextField phoneNumberTextField1;
+    private javax.swing.JComboBox<String> profileRoleSelect;
+    private javax.swing.JComboBox<String> profileRoleSelect1;
+    private javax.swing.JPanel profilesPanel;
+    private javax.swing.JButton returnButton;
+    private javax.swing.JLabel roleLabel;
+    private javax.swing.JButton searchEmployeeButton;
+    private javax.swing.JTextField searchTextField1;
+    private javax.swing.JPanel seeProfile;
+    private javax.swing.JLabel usernameLabel;
+    private javax.swing.JTextField usernameTextField;
+    private javax.swing.JTextField usernameTextField1;
     // End of variables declaration//GEN-END:variables
 }

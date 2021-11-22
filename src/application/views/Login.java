@@ -8,6 +8,7 @@ import application.DesktopApplication;
 import java.awt.Color;
 import java.util.Arrays;
 import application.logic.*;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -38,6 +39,9 @@ public class Login extends javax.swing.JPanel {
         passwordField = new javax.swing.JPasswordField();
         loginButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -51,6 +55,7 @@ public class Login extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.GridLayout(3, 1, 0, 20));
 
+        usernameField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         usernameField.setForeground(java.awt.Color.gray);
         usernameField.setText("Usuario");
         usernameField.setToolTipText("");
@@ -69,8 +74,9 @@ public class Login extends javax.swing.JPanel {
         });
         jPanel2.add(usernameField);
 
+        passwordField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         passwordField.setForeground(java.awt.Color.gray);
-        passwordField.setText("Constraseña");
+        passwordField.setText("Contraseña");
         passwordField.setToolTipText("");
         passwordField.setEchoChar('\u0000');
         passwordField.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -88,6 +94,9 @@ public class Login extends javax.swing.JPanel {
         });
         jPanel2.add(passwordField);
 
+        loginButton.setBackground(new java.awt.Color(42, 39, 41));
+        loginButton.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        loginButton.setForeground(new java.awt.Color(204, 204, 204));
         loginButton.setText("Iniciar Sesión");
         loginButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -96,11 +105,22 @@ public class Login extends javax.swing.JPanel {
         });
         jPanel2.add(loginButton);
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 350, 790, 160));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 400, 790, 160));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 0, 48)); // NOI18N
-        jLabel1.setText("Carpintería Peña");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 190, -1, -1));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/logo.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 400, 310));
+
+        jPanel3.setBackground(new java.awt.Color(42, 39, 41));
+        jPanel3.setLayout(null);
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1050, 0, 100, 630));
+
+        jPanel4.setBackground(new java.awt.Color(42, 39, 41));
+        jPanel4.setLayout(null);
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 100, 630));
+
+        jPanel5.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 0, 960, 10));
 
         add(jPanel1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
@@ -112,11 +132,21 @@ public class Login extends javax.swing.JPanel {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String mockUsername = "admin";
         char[] mockPassword = "admin".toCharArray();
+        Profile loggedProfile = null;
         
-        if (this.usernameField.getText().equals(mockUsername) && Arrays.equals(this.passwordField.getPassword(), mockPassword)) {
-            DesktopApplication.getInstance().changeFrame(ApplicationView.MAIN_MENU);
-            System.out.println("Login");
+        for (Profile profile : DesktopApplication.getInstance().getProfiles()) {
+            if (profile.getUsername().equals(this.usernameField.getText()) && MySecurityManager.getInstance().verify(this.passwordField.getPassword(), profile.getPasswordHash())) {
+                loggedProfile = profile;
+                break;
+            }
         }
+        
+        if (loggedProfile == null) {
+            JOptionPane.showMessageDialog(this, "El nombre de usuario y/o la contraseña son incorrectos", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        DesktopApplication.getInstance().changeFrame(ApplicationView.MAIN_MENU);
     }//GEN-LAST:event_loginButtonActionPerformed
 
     private void usernameFieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_usernameFieldFocusGained
@@ -159,6 +189,9 @@ public class Login extends javax.swing.JPanel {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JButton loginButton;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JTextField usernameField;

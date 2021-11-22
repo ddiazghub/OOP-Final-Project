@@ -4,12 +4,12 @@
  */
 package application.views;
 
+import application.components.MenuButton;
 import application.DesktopApplication;
 import java.awt.Color;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.awt.BorderLayout;
-import application.components.MenuItem;
 import application.logic.ListMenuItemData;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -32,6 +32,7 @@ public class MainMenu extends javax.swing.JPanel {
         new ListMenuItemData("src/res/icons/personel.png", "Personal", "personel"),
         new ListMenuItemData("src/res/icons/client.png", "Clientes", "clients"),
         new ListMenuItemData("src/res/icons/admin.png", "Administrador", "admin"),
+        new ListMenuItemData("src/res/icons/profile.png", "Mi Perfil", "profile"),
         new ListMenuItemData("src/res/icons/quit.png", "Salir", "quit"),
     };
 
@@ -47,9 +48,10 @@ public class MainMenu extends javax.swing.JPanel {
         this.tabArea.add(new PersonelMenu(), "personel");
         this.tabArea.add(new ClientsMenu(), "clients");
         this.tabArea.add(new AdministratorMenu(), "admin");
+        this.tabArea.add(new ProfileMenu(), "profile");
         
         for (ListMenuItemData item : this.menuItems) {
-            MenuItem newItem = new MenuItem(item.icon, item.text);
+            MenuButton newItem = new MenuButton(item.icon, item.text);
             this.listMenu.add(newItem);
             final String card = item.card;
             final CardLayout layout = (CardLayout) this.tabArea.getLayout();
@@ -88,13 +90,14 @@ public class MainMenu extends javax.swing.JPanel {
         jMenuItem1 = new javax.swing.JMenuItem();
         jPanel3 = new javax.swing.JPanel();
         listMenu = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         tabArea = new javax.swing.JPanel();
 
         jMenuItem1.setText("jMenuItem1");
 
         setMinimumSize(new java.awt.Dimension(1150, 620));
-        setPreferredSize(new java.awt.Dimension(1094, 620));
+        setPreferredSize(new java.awt.Dimension(1148, 621));
         setRequestFocusEnabled(false);
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -103,7 +106,10 @@ public class MainMenu extends javax.swing.JPanel {
 
         listMenu.setBackground(new java.awt.Color(42, 39, 41));
         listMenu.setLayout(new javax.swing.BoxLayout(listMenu, javax.swing.BoxLayout.PAGE_AXIS));
-        jPanel3.add(listMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 192, 450));
+        jPanel3.add(listMenu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 192, 450));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/logo_small.png"))); // NOI18N
+        jPanel3.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
         add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 620));
 
@@ -116,6 +122,7 @@ public class MainMenu extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;

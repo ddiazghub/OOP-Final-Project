@@ -4,19 +4,84 @@
  */
 package application.views;
 
+import application.DesktopApplication;
+import application.components.PersonelListItem;
+import application.logic.PersonelType;
+import java.awt.CardLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import application.logic.Personel;
+import java.time.ZoneId;
+import application.logic.Helpers;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.Image;
+import java.io.File;
+import javax.swing.ImageIcon;
+
 /**
  *
  * @author david
  */
 public class PersonelMenu extends javax.swing.JPanel {
-
+    private Image profileImage;
+    private Personel personel;
+    private String profileImagePath;
+    
     /**
      * Creates new form Home
      */
     public PersonelMenu() {
         initComponents();
+        this.personel = null;
+        final PersonelMenu menu = this;
+        this.profileImagePath = null;
+        
+        this.getAllPersonel();
     }
 
+    public void getAllPersonel() {
+        this.personelPanel.removeAll();
+        final PersonelMenu menu = this;
+        
+        for (Personel employee : DesktopApplication.getInstance().getPersonel()) {
+            PersonelListItem item = new PersonelListItem(employee);
+            this.personelPanel.add(item);
+
+            item.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent evt) {
+                    menu.personelListItemMousePressed(evt);
+                }
+            });
+        }
+    }
+    
+    public void setPersonel(Personel personel) {
+        this.personel = personel;
+        this.refresh();
+    }
+    
+    public void refresh() {
+        this.imageField2.setIcon(Helpers.readIconFromFile(new File(this.personel.getImagePath())));
+        this.idLabel.setText(Integer.toString(personel.getId()));
+        this.nameLabel.setText(personel.getName());
+        this.emailLabel.setText(personel.getEmail());
+        this.phoneNumberLabel.setText(Integer.toString(personel.getPhoneNumber()));
+        this.birthdayLabel.setText(Helpers.formatDate(this.personel.getBirthDay()));
+        this.admissionDateLabel.setText(Helpers.formatDate(this.personel.getAdmissionDate()));
+        this.jobLabel.setText(personel.getType().toString());
+        this.salaryLabel.setText(Double.toString(personel.getSalary()));
+    }
+    
+    public void personelListItemMousePressed(MouseEvent evt) {
+        this.setPersonel(((PersonelListItem) evt.getComponent()).getPersonel());
+        ((CardLayout) this.getLayout()).show(this, "seePersonel");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,33 +91,573 @@ public class PersonelMenu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        personelHome = new javax.swing.JPanel();
+        editButton2 = new javax.swing.JButton();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        searchTextField1 = new javax.swing.JTextField();
+        addProfileButton = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        personelPanel = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel13 = new javax.swing.JPanel();
+        label7 = new javax.swing.JLabel();
+        jSeparator5 = new javax.swing.JSeparator();
+        jPanel14 = new javax.swing.JPanel();
+        label8 = new javax.swing.JLabel();
+        jSeparator6 = new javax.swing.JSeparator();
+        jPanel15 = new javax.swing.JPanel();
+        label9 = new javax.swing.JLabel();
+        jSeparator7 = new javax.swing.JSeparator();
+        jPanel16 = new javax.swing.JPanel();
+        label10 = new javax.swing.JLabel();
+        jSeparator8 = new javax.swing.JSeparator();
+        jPanel17 = new javax.swing.JPanel();
+        label11 = new javax.swing.JLabel();
+        addPersonel = new javax.swing.JPanel();
+        setPictureButton = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        cancelButton = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        imageField = new javax.swing.JLabel();
+        emailTextField = new javax.swing.JTextField();
+        phoneNumberTextField = new javax.swing.JTextField();
+        nameTextField = new javax.swing.JTextField();
+        jLabel17 = new javax.swing.JLabel();
+        confirmButton = new javax.swing.JButton();
+        jLabel18 = new javax.swing.JLabel();
+        jobSelect = new javax.swing.JComboBox<>();
+        admissionDateCalendar = new com.toedter.calendar.JCalendar();
+        jLabel19 = new javax.swing.JLabel();
+        birthdayCalendar = new com.toedter.calendar.JCalendar();
+        seePersonel = new javax.swing.JPanel();
+        imageField2 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        deleteButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
+        jLabel38 = new javax.swing.JLabel();
+        emailLabel = new javax.swing.JLabel();
+        nameLabel = new javax.swing.JLabel();
+        admissionDateLabel = new javax.swing.JLabel();
+        birthdayLabel = new javax.swing.JLabel();
+        jobLabel = new javax.swing.JLabel();
+        phoneNumberLabel = new javax.swing.JLabel();
+        returnButton = new javax.swing.JButton();
+        editButton = new javax.swing.JButton();
+        salaryLabel = new javax.swing.JLabel();
+        jLabel41 = new javax.swing.JLabel();
+        idLabel = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(960, 610));
+        setLayout(new java.awt.CardLayout());
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel1.setText("Personal");
+        personelHome.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(383, 383, 383)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(399, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(223, 223, 223)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(290, Short.MAX_VALUE))
-        );
+        editButton2.setBackground(new java.awt.Color(42, 39, 41));
+        editButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        editButton2.setForeground(new java.awt.Color(204, 204, 204));
+        editButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/search.png"))); // NOI18N
+        editButton2.setText("Buscar");
+        editButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                editButton2MouseReleased(evt);
+            }
+        });
+        editButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButton2ActionPerformed(evt);
+            }
+        });
+        personelHome.add(editButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 110, 110, 50));
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Buscar Por...", "ID", "Nombre" }));
+        personelHome.add(jComboBox2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 170, 30));
+
+        searchTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        searchTextField1.setToolTipText("");
+        searchTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchTextField1ActionPerformed(evt);
+            }
+        });
+        personelHome.add(searchTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, 350, 30));
+
+        addProfileButton.setBackground(new java.awt.Color(42, 39, 41));
+        addProfileButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        addProfileButton.setForeground(new java.awt.Color(204, 204, 204));
+        addProfileButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/add.png"))); // NOI18N
+        addProfileButton.setText("Añadir");
+        addProfileButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                addProfileButtonMouseReleased(evt);
+            }
+        });
+        addProfileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addProfileButtonActionPerformed(evt);
+            }
+        });
+        personelHome.add(addProfileButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 110, 110, 50));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel5.setText("Gestionar Personal");
+        personelHome.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 350, 40));
+
+        personelPanel.setBackground(new java.awt.Color(153, 153, 153));
+        personelPanel.setLayout(new javax.swing.BoxLayout(personelPanel, javax.swing.BoxLayout.PAGE_AXIS));
+        jScrollPane2.setViewportView(personelPanel);
+
+        personelHome.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 260, 800, 280));
+
+        jPanel3.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel3.setPreferredSize(new java.awt.Dimension(799, 50));
+        jPanel3.setLayout(new javax.swing.BoxLayout(jPanel3, javax.swing.BoxLayout.LINE_AXIS));
+
+        jPanel13.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel13.setMaximumSize(new java.awt.Dimension(120, 50));
+        jPanel13.setMinimumSize(new java.awt.Dimension(120, 50));
+        jPanel13.setPreferredSize(new java.awt.Dimension(120, 50));
+        jPanel13.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label7.setForeground(new java.awt.Color(204, 204, 204));
+        label7.setText("ID");
+        jPanel13.add(label7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+
+        jPanel3.add(jPanel13);
+
+        jSeparator5.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator5.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator5);
+
+        jPanel14.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel14.setMaximumSize(new java.awt.Dimension(160, 50));
+        jPanel14.setMinimumSize(new java.awt.Dimension(160, 50));
+        jPanel14.setPreferredSize(new java.awt.Dimension(160, 50));
+        jPanel14.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label8.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label8.setForeground(new java.awt.Color(204, 204, 204));
+        label8.setText("Nombre");
+        jPanel14.add(label8, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, -1, -1));
+
+        jPanel3.add(jPanel14);
+
+        jSeparator6.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator6.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator6);
+
+        jPanel15.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel15.setMaximumSize(new java.awt.Dimension(180, 50));
+        jPanel15.setMinimumSize(new java.awt.Dimension(180, 50));
+        jPanel15.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label9.setForeground(new java.awt.Color(204, 204, 204));
+        label9.setText("Correo Electrónico");
+        jPanel15.add(label9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+
+        jPanel3.add(jPanel15);
+
+        jSeparator7.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator7.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator7);
+
+        jPanel16.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel16.setMaximumSize(new java.awt.Dimension(180, 50));
+        jPanel16.setMinimumSize(new java.awt.Dimension(180, 50));
+        jPanel16.setName(""); // NOI18N
+        jPanel16.setPreferredSize(new java.awt.Dimension(180, 50));
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label10.setForeground(new java.awt.Color(204, 204, 204));
+        label10.setText("Cargo");
+        jPanel16.add(label10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, -1, -1));
+
+        jPanel3.add(jPanel16);
+
+        jSeparator8.setForeground(new java.awt.Color(204, 204, 204));
+        jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jPanel3.add(jSeparator8);
+
+        jPanel17.setBackground(new java.awt.Color(204, 0, 0));
+        jPanel17.setMaximumSize(new java.awt.Dimension(140, 50));
+        jPanel17.setMinimumSize(new java.awt.Dimension(140, 50));
+        jPanel17.setPreferredSize(new java.awt.Dimension(140, 50));
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        label11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        label11.setForeground(new java.awt.Color(204, 204, 204));
+        label11.setText("Salario");
+        jPanel17.add(label11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, -1, -1));
+
+        jPanel3.add(jPanel17);
+
+        personelHome.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(81, 210, -1, -1));
+
+        add(personelHome, "personelHome");
+
+        addPersonel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        setPictureButton.setBackground(new java.awt.Color(42, 39, 41));
+        setPictureButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        setPictureButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/edit.png"))); // NOI18N
+        setPictureButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setPictureButtonActionPerformed(evt);
+            }
+        });
+        addPersonel.add(setPictureButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, -1));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel8.setText("Añadir Personal");
+        addPersonel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 280, 40));
+
+        cancelButton.setBackground(new java.awt.Color(42, 39, 41));
+        cancelButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        cancelButton.setForeground(new java.awt.Color(204, 204, 204));
+        cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelButtonActionPerformed(evt);
+            }
+        });
+        addPersonel.add(cancelButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 500, 160, 50));
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel11.setText("Correo Electrónico:");
+        addPersonel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 290, 160, 20));
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel13.setText("Nombre Completo:");
+        addPersonel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 500, 150, 20));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel14.setText("Número de Teléfono:");
+        addPersonel.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 350, 20));
+
+        imageField.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/504-5040528_empty-profile-picture-png-transparent-png.png"))); // NOI18N
+        addPersonel.add(imageField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
+
+        emailTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        emailTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                emailTextFieldActionPerformed(evt);
+            }
+        });
+        addPersonel.add(emailTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 410, 30));
+
+        phoneNumberTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        addPersonel.add(phoneNumberTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 370, 410, 30));
+
+        nameTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        nameTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nameTextFieldActionPerformed(evt);
+            }
+        });
+        addPersonel.add(nameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 520, 370, 30));
+
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel17.setText("Fecha de Ingreso:");
+        addPersonel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 80, 150, 20));
+
+        confirmButton.setBackground(new java.awt.Color(42, 39, 41));
+        confirmButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirmButton.setForeground(new java.awt.Color(204, 204, 204));
+        confirmButton.setText("Añadir Empleado");
+        confirmButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                confirmButtonActionPerformed(evt);
+            }
+        });
+        addPersonel.add(confirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel18.setText("Cargo:");
+        addPersonel.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 230, 110, 20));
+
+        jobSelect.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jobSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ebanista", "Vendedor", "JefeControlCalidad", "Contador", "Gerente", "Recepcionista" }));
+        addPersonel.add(jobSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 410, 30));
+        addPersonel.add(admissionDateCalendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 100, 190, 120));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel19.setText("Fecha de Nacimiento:");
+        addPersonel.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 150, 20));
+        addPersonel.add(birthdayCalendar, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, 190, 120));
+
+        add(addPersonel, "addPersonel");
+
+        seePersonel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        imageField2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/504-5040528_empty-profile-picture-png-transparent-png.png"))); // NOI18N
+        seePersonel.add(imageField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel4.setText("Ver Personal");
+        seePersonel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, 210, 40));
+
+        deleteButton.setBackground(new java.awt.Color(42, 39, 41));
+        deleteButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        deleteButton.setForeground(new java.awt.Color(204, 204, 204));
+        deleteButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/delete.png"))); // NOI18N
+        deleteButton.setText("Eliminar");
+        deleteButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                deleteButtonMouseReleased(evt);
+            }
+        });
+        deleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteButtonActionPerformed(evt);
+            }
+        });
+        seePersonel.add(deleteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 500, 160, 50));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setText("Correo Electrónico:");
+        seePersonel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 170, 160, 20));
+
+        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel36.setText("Fecha de Nacimiento:");
+        seePersonel.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 290, 160, 20));
+
+        jLabel37.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel37.setText("Fecha de Ingreso:");
+        seePersonel.add(jLabel37, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 150, 20));
+
+        jLabel38.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel38.setText("Número de Teléfono:");
+        seePersonel.add(jLabel38, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 230, 350, 20));
+
+        emailLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        emailLabel.setText("NULL");
+        seePersonel.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 190, 460, 20));
+
+        nameLabel.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        nameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        nameLabel.setText("David Eduardo Diaz de Moya");
+        seePersonel.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 500, 520, 30));
+
+        admissionDateLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        admissionDateLabel.setText("NULL");
+        seePersonel.add(admissionDateLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 370, 480, 20));
+
+        birthdayLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        birthdayLabel.setText("NULL");
+        seePersonel.add(birthdayLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 470, 20));
+
+        jobLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jobLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jobLabel.setText("Gerente");
+        seePersonel.add(jobLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 530, 310, 20));
+
+        phoneNumberLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        phoneNumberLabel.setText("NULL");
+        seePersonel.add(phoneNumberLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 250, 490, 20));
+
+        returnButton.setBackground(new java.awt.Color(42, 39, 41));
+        returnButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        returnButton.setForeground(new java.awt.Color(204, 204, 204));
+        returnButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/return.png"))); // NOI18N
+        returnButton.setText("Volver");
+        returnButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                returnButtonMouseReleased(evt);
+            }
+        });
+        returnButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnButtonActionPerformed(evt);
+            }
+        });
+        seePersonel.add(returnButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 160, 50));
+
+        editButton.setBackground(new java.awt.Color(42, 39, 41));
+        editButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        editButton.setForeground(new java.awt.Color(204, 204, 204));
+        editButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/edit.png"))); // NOI18N
+        editButton.setText("Editar");
+        editButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                editButtonMouseReleased(evt);
+            }
+        });
+        editButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                editButtonActionPerformed(evt);
+            }
+        });
+        seePersonel.add(editButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
+
+        salaryLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        salaryLabel.setText("NULL");
+        seePersonel.add(salaryLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 430, 480, 20));
+
+        jLabel41.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel41.setText("Salario:");
+        seePersonel.add(jLabel41, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 410, 150, 20));
+
+        idLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        idLabel.setText("NULL");
+        seePersonel.add(idLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 130, 460, 20));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel7.setText("ID:");
+        seePersonel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 110, 160, 20));
+
+        add(seePersonel, "seePersonel");
     }// </editor-fold>//GEN-END:initComponents
+
+    private void editButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButton2MouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButton2MouseReleased
+
+    private void editButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButton2ActionPerformed
+
+    private void searchTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextField1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchTextField1ActionPerformed
+
+    private void addProfileButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addProfileButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addProfileButtonMouseReleased
+
+    private void addProfileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addProfileButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "addPersonel");
+        this.personel = null;
+    }//GEN-LAST:event_addProfileButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "personelHome");
+        this.personel = null;
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void emailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_emailTextFieldActionPerformed
+
+    private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nameTextFieldActionPerformed
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el empleado");
+        ArrayList<Personel> personel = DesktopApplication.getInstance().getPersonel();
+        personel.add(new Personel(personel.size(), 4000000, this.admissionDateCalendar.getDate(), PersonelType.valueOf((String) this.jobSelect.getSelectedItem()), this.nameTextField.getText(), this.birthdayCalendar.getDate(), Integer.parseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText(), this.profileImagePath));
+        ((CardLayout) this.getLayout()).show(this, "personelHome");
+        this.getAllPersonel();
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void deleteButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseReleased
+
+    }//GEN-LAST:event_deleteButtonMouseReleased
+
+    private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
+        DesktopApplication.getInstance().getPersonel().remove(this.personel);
+        this.personel = null;
+        ((CardLayout) this.getLayout()).show(this, "personelHome");
+    }//GEN-LAST:event_deleteButtonActionPerformed
+
+    private void returnButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnButtonMouseReleased
+
+    }//GEN-LAST:event_returnButtonMouseReleased
+
+    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
+        ((CardLayout) this.getLayout()).show(this, "personelHome");
+    }//GEN-LAST:event_returnButtonActionPerformed
+
+    private void editButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButtonMouseReleased
+
+    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editButtonActionPerformed
+
+    private void setPictureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setPictureButtonActionPerformed
+        JFileChooser choice = new JFileChooser();
+        choice.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "jpeg"));
+        choice.setAcceptAllFileFilterUsed(false);
+        
+        if (choice.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            this.profileImagePath = choice.getSelectedFile().getAbsolutePath();
+            this.imageField.setIcon(Helpers.readIconFromFile(choice.getSelectedFile()));
+        }
+    }//GEN-LAST:event_setPictureButtonActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel addPersonel;
+    private javax.swing.JButton addProfileButton;
+    private com.toedter.calendar.JCalendar admissionDateCalendar;
+    private javax.swing.JLabel admissionDateLabel;
+    private com.toedter.calendar.JCalendar birthdayCalendar;
+    private javax.swing.JLabel birthdayLabel;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton confirmButton;
+    private javax.swing.JButton deleteButton;
+    private javax.swing.JButton editButton;
+    private javax.swing.JButton editButton2;
+    private javax.swing.JLabel emailLabel;
+    private javax.swing.JTextField emailTextField;
+    private javax.swing.JLabel idLabel;
+    private javax.swing.JLabel imageField;
+    private javax.swing.JLabel imageField2;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
+    private javax.swing.JLabel jLabel38;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel41;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator5;
+    private javax.swing.JSeparator jSeparator6;
+    private javax.swing.JSeparator jSeparator7;
+    private javax.swing.JSeparator jSeparator8;
+    private javax.swing.JLabel jobLabel;
+    private javax.swing.JComboBox<String> jobSelect;
+    private javax.swing.JLabel label10;
+    private javax.swing.JLabel label11;
+    private javax.swing.JLabel label7;
+    private javax.swing.JLabel label8;
+    private javax.swing.JLabel label9;
+    private javax.swing.JLabel nameLabel;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JPanel personelHome;
+    private javax.swing.JPanel personelPanel;
+    private javax.swing.JLabel phoneNumberLabel;
+    private javax.swing.JTextField phoneNumberTextField;
+    private javax.swing.JButton returnButton;
+    private javax.swing.JLabel salaryLabel;
+    private javax.swing.JTextField searchTextField1;
+    private javax.swing.JPanel seePersonel;
+    private javax.swing.JButton setPictureButton;
     // End of variables declaration//GEN-END:variables
 }
