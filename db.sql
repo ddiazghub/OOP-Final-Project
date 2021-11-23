@@ -151,7 +151,7 @@ CREATE TABLE public."Personel"
     "Salary" double precision NOT NULL,
     "AdmissionDate" timestamp without time zone NOT NULL,
     "PersonelTypeId" bigint NOT NULL,
-	"ProfileId" bigint NOT NULL,
+	"ProfileId" bigint,
 	"ProfileImagePath" character varying(150) COLLATE pg_catalog."default" NOT NULL,
     CONSTRAINT "Personel_pkey" PRIMARY KEY ("Id"),
     CONSTRAINT "PersonelType" FOREIGN KEY ("PersonelTypeId")
@@ -192,7 +192,7 @@ CREATE TABLE public."Purchases"
     "Id" bigserial NOT NULL,
     "Total" double precision NOT NULL,
     "ProviderId" bigint NOT NULL,
-    "Purchased" jsonb NOT NULL,
+    "Purchased" json NOT NULL,
     PRIMARY KEY ("Id"),
     CONSTRAINT "Provider" FOREIGN KEY ("ProviderId")
         REFERENCES public."Providers" ("Id") MATCH SIMPLE
@@ -211,7 +211,7 @@ CREATE TABLE public."Sales"
     "PaymentMethodId" bigint NOT NULL,
     "ClientId" bigint NOT NULL,
     "Date" timestamp without time zone NOT NULL,
-    "Purchased" jsonb NOT NULL,
+    "Purchased" json NOT NULL,
     PRIMARY KEY ("Id"),
     CONSTRAINT "PaymentMethod" FOREIGN KEY ("PaymentMethodId")
         REFERENCES public."PaymentMethods" ("Id") MATCH SIMPLE
@@ -228,8 +228,20 @@ CREATE TABLE public."Sales"
 ALTER TABLE public."Sales"
     OWNER to postgres;
 
+CREATE TABLE public."ProductStock"
+(
+    "ProductId" bigint NOT NULL,
+    "Quantity" bigint NOT NULL,
+    PRIMARY KEY ("ProductId"),
+    CONSTRAINT "Product" FOREIGN KEY ("ProductId")
+        REFERENCES public."Products" ("Id") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID
+);
 
-
+ALTER TABLE public."ProductStock"
+    OWNER to postgres;
 
 INSERT INTO public."PaymentMethods"("Name")
 	VALUES ('Efectivo'),
@@ -253,3 +265,19 @@ INSERT INTO public."ClientMembershipTypes"(
 INSERT INTO public."ProfileRoles" (name)
 VALUES ('Usuario'),
         ('Administrador');
+
+CREATE TABLE public."MaterialStock"
+(
+    "MaterialId" bigint NOT NULL,
+    "Quantity" bigint NOT NULL,
+    CONSTRAINT "MaterialStock_pkey" PRIMARY KEY ("MaterialId"),
+    CONSTRAINT "Material" FOREIGN KEY ("MaterialId")
+        REFERENCES public."Materials" ("Id") MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public."MaterialStock"
+    OWNER to postgres;

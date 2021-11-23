@@ -31,6 +31,8 @@ public class DatabaseManager {
         this.queries.put("Providers", "SELECT * FROM public.\"Providers\"");
         this.queries.put("Purchases", "SELECT * FROM public.\"Purchases\"");
         this.queries.put("Sales", "SELECT * FROM public.\"Sales\"");
+        this.queries.put("MaterialStock", "SELECT * FROM public.\"MaterialStock\"");
+        this.queries.put("ProductStock", "SELECT * FROM public.\"ProductStock\"");
     }
     
     public void close() {
@@ -375,7 +377,9 @@ public class DatabaseManager {
         try {
             PreparedStatement st = instance.connection.prepareStatement("INSERT INTO public.\"Products\"(\n" +
 "	\"Name\", \"Cost\", \"Description\")\n" +
-"	VALUES (?, ?, ?)");
+"	VALUES (?, ?, ?); INSERT INTO public.\"ProductStock\"(\n" +
+"	\"ProductId\", \"Quantity\")\n" +
+"	VALUES (SELECT MAX(\"Id\") FROM \"Products\", ?);");
             st.setString(1, product.getName());
             st.setDouble(2, product.getCost());
             st.setString(3, product.getDescription());
@@ -431,10 +435,13 @@ public class DatabaseManager {
         try {
             PreparedStatement st = instance.connection.prepareStatement("INSERT INTO public.\"Materials\"(\n" +
 "	\"Name\", \"Cost\", \"Description\")\n" +
-"	VALUES (?, ?, ?)");
+"	VALUES (?, ?, ?); INSERT INTO public.\"MaterialStock\"(\n" +
+"	\"MaterialId\", \"Quantity\")\n" +
+"	VALUES (SELECT MAX(\"Id\") FROM \"Materials\", ?)");
             st.setString(1, material.getName());
             st.setDouble(2, material.getCost());
             st.setString(3, material.getDescription());
+            st.setInt(4, 0);
             ResultSet rs = st.executeQuery();
             rs.close();
             st.close();
@@ -594,6 +601,62 @@ public class DatabaseManager {
             ResultSet rs = st.executeQuery();
             rs.close();
             
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static HashMap<Purchasable, Integer> selectStock() {
+        HashMap<Purchasable, Integer> stock = null;
+        
+        try {
+            stock = new HashMap<>();
+            Statement st = instance.connection.createStatement();
+            ResultSet rs = st.executeQuery(instance.queries.get("MaterialStock"));
+            
+            while (rs.next())
+                stock.put(selectMaterial(rs.getInt("MaterialId")), rs.getInt("Quantity"));
+            
+            rs.close();
+            st.close();
+            
+            st = instance.connection.createStatement();
+            rs = st.executeQuery(instance.queries.get("ProductStock"));
+            
+            while (rs.next())
+                stock.put(selectProduct(rs.getInt("ProductId")), rs.getInt("Quantity"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return stock;
+    }
+    
+    public static void updateMaterialStock(int id, int quantity) {
+        try {
+            PreparedStatement st = instance.connection.prepareStatement("UPDATE public.\"MaterialStock\"\n" +
+"	SET \"Quantity\"=?\n" +
+"	WHERE \"MaterialId\"=?");
+            st.setInt(2, id);
+            st.setInt(1, quantity);
+            ResultSet rs = st.executeQuery();
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static void updateProductStock(int id, int quantity) {
+        try {
+            PreparedStatement st = instance.connection.prepareStatement("UPDATE public.\"ProductStock\"\n" +
+"	SET \"Quantity\"=?\n" +
+"	WHERE \"ProductId\"=?");
+            st.setInt(2, id);
+            st.setInt(1, quantity);
+            ResultSet rs = st.executeQuery();
+            rs.close();
             st.close();
         } catch (SQLException e) {
             e.printStackTrace();
