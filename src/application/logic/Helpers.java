@@ -12,8 +12,13 @@ import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
@@ -71,5 +76,59 @@ public class Helpers {
         double scalex = (double) targetWidth / sourceWidth;
         double scaley = (double) targetHeight / sourceHeight;
         return Math.min(scalex, scaley);
+    }
+    
+    public static JSONObject getJsonFromMap(Map<Integer, Integer> map) {
+        JSONObject jsonData = new JSONObject();
+        try {
+            for (Integer key : map.keySet()) {
+                jsonData.put(key.toString(), map.get(key));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        
+        return jsonData;
+    }
+    
+    public static HashMap<Product, Integer> getProductsFromJson(JSONObject json) {
+        HashMap<Product, Integer> map = new HashMap<>();
+        Iterator<String> keys = json.keys();
+        
+        try {
+            while(keys.hasNext()) {
+                String key = keys.next();
+                map.put(DatabaseManager.selectProduct((Integer) json.get(key)), Integer.parseInt(key));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return map;
+    }
+    
+    public static HashMap<Material, Integer> getMaterialsFromJson(JSONObject json) {
+        HashMap<Material, Integer> map = new HashMap<>();
+        Iterator<String> keys = json.keys();
+        
+        try {
+            while(keys.hasNext()) {
+                String key = keys.next();
+                map.put(DatabaseManager.selectMaterial((Integer) json.get(key)), Integer.parseInt(key));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return map;
+    }
+    
+    public static JSONObject json(String jsonString) {
+        try {
+            return new JSONObject(jsonString);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

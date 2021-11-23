@@ -3,26 +3,54 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/SalesAndPurchasesMenu.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/nbproject/private/private.xml</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/StockMenu.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/StockListItem.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Person.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/SecurityManager.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/PersonelMenu.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/examples/ContactEditor.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/HomeMenu.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/MainMenu.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Profile.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/nbproject/build-impl.xml</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/PurchaseListItem.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/PersonelListItem.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/SalesListItem.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/ViewFactory.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/MySecurityManager.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/SalesAndPurchasesMenu.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/examples/ContactEditor.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/ProfileMenu.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/ClientsMenu.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/AdministratorMenu.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/examples/Find.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/ClientMembershipType.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Product.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Sale.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/manifest.mf</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Purchase.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/DesktopApplication.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Material.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/nbproject/private/private.properties</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/ListMenuItemData.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/ProfileListItem.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/readme.txt</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/PurchasedListItem.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/AdministratorMenu.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/nbproject/project.properties</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/ClientsMenu.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/ApplicationView.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/Login.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/examples/Antenna.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Client.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/ViewFactory.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/DesktopApplication.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/MenuItem.java</file>
-            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/ListMenuItemData.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Helpers.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/ProfileRole.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/PaymentMethod.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/DatabaseManager.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/build.xml</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/nbproject/project.xml</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/PersonelType.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/views/Login.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Purchasable.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/ClientListItem.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/components/MenuButton.java</file>
+            <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Provider.java</file>
             <file>file:/C:/Users/david/Documents/NetBeansProjects/GUIPeña/src/application/logic/Personel.java</file>
         </group>
     </open-files>

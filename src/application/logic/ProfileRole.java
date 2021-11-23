@@ -9,6 +9,23 @@ package application.logic;
  * @author david
  */
 public enum ProfileRole {
-    Usuario,
-    Admin
+    Usuario(1),
+    Admin(2);
+    
+    private int value;
+
+    private ProfileRole(int value) {
+        this.value = value;
+    }
+    
+    public int getValue() {
+        return this.value;
+    }
+
+    public static ProfileRole get(int value) {
+       for (ProfileRole m : ProfileRole.values()) {
+           if (m.value == value) return m;
+       }
+       return null;
+    }
 }

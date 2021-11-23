@@ -75,6 +75,15 @@ public class Sale {
         return purchased;
     }
     
+    public HashMap<Integer, Integer> getPurchasedIds() {
+        HashMap<Integer, Integer> purchasedIds = new HashMap<>();
+        
+        for (Product product : this.purchased.keySet())
+            purchasedIds.put(product.getId(), this.purchased.get(product));
+        
+        return purchasedIds;
+    }
+    
     public int getItemCount() {
         int count = 0;
         

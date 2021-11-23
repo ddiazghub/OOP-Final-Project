@@ -11,6 +11,9 @@ import javax.swing.JPanel;
 import application.views.Login;
 import application.views.MainMenu;
 import application.logic.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -34,6 +37,7 @@ public class DesktopApplication extends JFrame {
     private ArrayList<Product> products;
     private Profile currentProfile;
     private HashMap<Purchasable, Integer> stock;
+    private DatabaseManager db;
     
     private DesktopApplication() {
         super("Carpintería Peña");
@@ -56,6 +60,10 @@ public class DesktopApplication extends JFrame {
         this.providers.add(new Provider(2, "Ferreteria el Lugar", "Puerto Colombia", "Cra 19 # 24 - 56", 3462453, "ellugarferreteria@gmail.com"));
     }
 
+    public void startDb() {
+        this.db = DatabaseManager.getInstance();
+    }
+    
     public ArrayList<Purchase> getPurchases() {
         return purchases;
     }
@@ -107,6 +115,13 @@ public class DesktopApplication extends JFrame {
         this.setLocationRelativeTo(null);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setVisible(true);
+        this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+                DatabaseManager.getInstance().close();
+                System.exit(0);//cierra aplicacion
+            }
+        });
+        this.startDb();
     }
     
     public void changeFrame(ApplicationView view) {

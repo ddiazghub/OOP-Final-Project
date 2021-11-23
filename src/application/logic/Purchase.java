@@ -18,6 +18,18 @@ public class Purchase {
     private Provider provider;
     private final HashMap<Material, Integer> purchased;
 
+    public Purchase(Date date, Provider provider, HashMap<Material, Integer> purchased) {
+        this.id = -1;
+        this.date = date;
+        this.provider = provider;
+        this.purchased = purchased;
+        this.total = 0;
+        
+        for (Material material : this.purchased.keySet()) {
+            this.total += this.purchased.get(material) * material.getCost();
+        }
+    }
+    
     public Purchase(int id, Date date, Provider provider, HashMap<Material, Integer> purchased) {
         this.id = id;
         this.date = date;
@@ -60,6 +72,15 @@ public class Purchase {
 
     public HashMap<Material, Integer> getPurchased() {
         return purchased;
+    }
+    
+    public HashMap<Integer, Integer> getPurchasedIds() {
+        HashMap<Integer, Integer> purchasedIds = new HashMap<>();
+        
+        for (Material material : this.purchased.keySet())
+            purchasedIds.put(material.getId(), this.purchased.get(material));
+        
+        return purchasedIds;
     }
     
     public int getItemCount() {

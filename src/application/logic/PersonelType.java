@@ -9,10 +9,27 @@ package application.logic;
  * @author david
  */
 public enum PersonelType {
-    Ebanista,
-    Vendedor,
-    JefeControlCalidad,
-    Contador,
-    Gerente,
-    Recepcionista
+    Ebanista(1),
+    Vendedor(2),
+    JefeControlCalidad(3),
+    Contador(4),
+    Gerente(5),
+    Recepcionista(6);
+    
+    private int value;
+
+    private PersonelType(int value) {
+        this.value = value;
+    }
+    
+    public int getValue() {
+        return this.value;
+    }
+
+    public static PersonelType get(int value) {
+       for (PersonelType m : PersonelType.values()) {
+           if (m.value == value) return m;
+       }
+       return null;
+    }
 }

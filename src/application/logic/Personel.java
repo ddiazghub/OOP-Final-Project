@@ -105,4 +105,8 @@ public class Personel extends Person {
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
+    
+    public Boolean hasProfile() {
+        return this.profile != null;
+    }
 }
