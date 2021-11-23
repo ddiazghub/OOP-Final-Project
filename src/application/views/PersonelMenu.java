@@ -554,7 +554,7 @@ public class PersonelMenu extends javax.swing.JPanel {
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el empleado");
         ArrayList<Personel> personel = DesktopApplication.getInstance().getPersonel();
-        personel.add(new Personel(personel.size(), 4000000, this.admissionDateCalendar.getDate(), PersonelType.valueOf((String) this.jobSelect.getSelectedItem()), this.nameTextField.getText(), this.birthdayCalendar.getDate(), Integer.parseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText(), this.profileImagePath));
+        personel.add(new Personel(personel.size(), 4000000, this.admissionDateCalendar.getDate(), PersonelType.valueOf((String) this.jobSelect.getSelectedItem()), this.nameTextField.getText(), this.birthdayCalendar.getDate(), Helpers.tryParseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText(), this.profileImagePath));
         ((CardLayout) this.getLayout()).show(this, "personelHome");
         this.getAllPersonel();
     }//GEN-LAST:event_confirmButtonActionPerformed

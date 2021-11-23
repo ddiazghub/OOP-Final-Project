@@ -351,7 +351,7 @@ public class ClientsMenu extends javax.swing.JPanel {
         confirmButton.setBackground(new java.awt.Color(42, 39, 41));
         confirmButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirmButton.setForeground(new java.awt.Color(204, 204, 204));
-        confirmButton.setText("Añadir Empleado");
+        confirmButton.setText("Añadir Cliente");
         confirmButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButtonActionPerformed(evt);
@@ -527,7 +527,7 @@ public class ClientsMenu extends javax.swing.JPanel {
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
         ArrayList<Client> clients = DesktopApplication.getInstance().getClients();
-        clients.add(new Client(clients.size(), this.addressTextField1.getText(), this.cityTextField.getText(), this.nameTextField.getText(), this.birthdayChooser.getDate(), Integer.parseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText()));
+        clients.add(new Client(clients.size(), this.addressTextField1.getText(), this.cityTextField.getText(), this.nameTextField.getText(), this.birthdayChooser.getDate(), Helpers.tryParseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText()));
         ((CardLayout) this.getLayout()).show(this, "clients");
         this.getAllClients();
         javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el Cliente");

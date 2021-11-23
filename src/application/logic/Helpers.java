@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +26,24 @@ public class Helpers {
     
     public static Date dateFrom(int year, int month, int day) {
         return Date.from(LocalDate.of(year, month, day).atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+    
+    public static int tryParseInt(String string) {
+        try {
+            return Integer.parseInt(string);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ingrese un valor numérico Entero", "Error", JOptionPane.ERROR_MESSAGE);
+            throw new NumberFormatException();
+        }
+    }
+    
+    public static double tryParseDouble(String string) {
+        try {
+            return Double.parseDouble(string);
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Ingrese un valor numérico", "Error", JOptionPane.ERROR_MESSAGE);
+            throw new NumberFormatException();
+        }
     }
     
     public static ImageIcon readIconFromFile(File file) {

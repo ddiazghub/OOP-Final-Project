@@ -16,6 +16,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import java.awt.CardLayout;
 import application.logic.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,16 +26,7 @@ public class MainMenu extends javax.swing.JPanel {
     
     private JPanel currentView;
     
-    private final ListMenuItemData[] menuItems = {
-        new ListMenuItemData("src/res/icons/home.png", "Inicio", "home"),
-        new ListMenuItemData("src/res/icons/sale.png", "Compras y Ventas", "sales"),
-        new ListMenuItemData("src/res/icons/productStock.png", "Inventario", "stock"),
-        new ListMenuItemData("src/res/icons/personel.png", "Personal", "personel"),
-        new ListMenuItemData("src/res/icons/client.png", "Clientes", "clients"),
-        new ListMenuItemData("src/res/icons/admin.png", "Administrador", "admin"),
-        new ListMenuItemData("src/res/icons/profile.png", "Mi Perfil", "profile"),
-        new ListMenuItemData("src/res/icons/quit.png", "Salir", "quit"),
-    };
+    private final ArrayList<ListMenuItemData> menuItems;
 
     /**
      * Creates new form Login
@@ -42,13 +34,24 @@ public class MainMenu extends javax.swing.JPanel {
     public MainMenu() {
         initComponents();
         
-        this.tabArea.add(new HomeMenu(), "home");
         this.tabArea.add(new SalesAndPurchasesMenu(), "sales");
         this.tabArea.add(new StockMenu(), "stock");
         this.tabArea.add(new PersonelMenu(), "personel");
         this.tabArea.add(new ClientsMenu(), "clients");
         this.tabArea.add(new AdministratorMenu(), "admin");
         this.tabArea.add(new ProfileMenu(), "profile");
+        this.menuItems = new ArrayList<>();
+        
+        this.menuItems.add(new ListMenuItemData("src/res/icons/sale.png", "Compras y Ventas", "sales"));
+        this.menuItems.add(new ListMenuItemData("src/res/icons/productStock.png", "Inventario", "stock"));
+        this.menuItems.add(new ListMenuItemData("src/res/icons/personel.png", "Personal", "personel"));
+        this.menuItems.add(new ListMenuItemData("src/res/icons/client.png", "Clientes", "clients"));
+        
+        if (DesktopApplication.getInstance().getCurrentProfile().getRole() == ProfileRole.Admin)
+            this.menuItems.add(new ListMenuItemData("src/res/icons/admin.png", "Administrador", "admin"));
+            
+        this.menuItems.add(new ListMenuItemData("src/res/icons/profile.png", "Mi Perfil", "profile"));
+        this.menuItems.add(new ListMenuItemData("src/res/icons/quit.png", "Salir", "quit"));
         
         for (ListMenuItemData item : this.menuItems) {
             MenuButton newItem = new MenuButton(item.icon, item.text);

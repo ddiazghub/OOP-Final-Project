@@ -8,8 +8,11 @@ import application.DesktopApplication;
 import application.components.PurchaseListItem;
 import application.components.PurchasedListItem;
 import application.components.SalesListItem;
+import application.logic.Client;
 import application.logic.Helpers;
 import application.logic.Material;
+import application.logic.PaymentMethod;
+import application.logic.Product;
 import application.logic.Purchasable;
 import application.logic.Provider;
 import application.logic.Purchase;
@@ -35,17 +38,18 @@ import javax.swing.JTextField;
 public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
     private Purchase purchase;
+    private Client saleClient;
     private Sale sale;
-    private ArrayList<Purchasable> items;
     
     /**
      * Creates new form Sales
      */
     public SalesAndPurchasesMenu() {
         initComponents();
-        this.items = new ArrayList<>();
        this.getAllPurchases();
        this.getAllSales();
+       
+       this.saleClient = null;
        
        for (Provider provider : DesktopApplication.getInstance().getProviders()) {
            this.providerSelect.addItem(provider);
@@ -107,7 +111,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     public void refreshPurchase() {
         this.idLabel.setText(Integer.toString(this.purchase.getId()));
         this.providerIdLabel.setText(Integer.toString(this.purchase.getProvider().getId()));
-        this.purchaseTotalLabel.setText(Helpers.formatDate(this.purchase.getDate()));
+        this.dateLabel.setText(Helpers.formatDate(this.purchase.getDate()));
         this.providerNameLabel.setText(this.purchase.getProvider().getName());
         this.purchaseTotalLabel.setText(Double.toString(this.purchase.getTotal()));
         this.purchasedItemsPanel.removeAll();
@@ -117,15 +121,15 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }
     
     public void refreshSale() {
-        this.idLabel.setText(Integer.toString(this.purchase.getId()));
-        this.providerIdLabel.setText(Integer.toString(this.purchase.getProvider().getId()));
-        this.purchaseTotalLabel.setText(Helpers.formatDate(this.purchase.getDate()));
-        this.providerNameLabel.setText(this.purchase.getProvider().getName());
-        this.purchaseTotalLabel.setText(Double.toString(this.purchase.getTotal()));
-        this.purchasedItemsPanel.removeAll();
+        this.idLabel1.setText(Integer.toString(this.sale.getId()));
+        this.clientIdLabel.setText(Integer.toString(this.sale.getClient().getId()));
+        this.dateLabel1.setText(Helpers.formatDate(this.sale.getDate()));
+        this.clientNameLabel.setText(this.sale.getClient().getName());
+        this.saleTotalLabel.setText(Double.toString(this.sale.getTotal()));
+        this.soldItemsPanel1.removeAll();
         
-        for (Purchasable item : this.purchase.getPurchased().keySet())
-            this.purchasedItemsPanel.add(new PurchasedListItem(item, this.purchase.getPurchased().get((Material) item), false));
+        for (Purchasable item : this.sale.getPurchased().keySet())
+            this.purchasedItemsPanel.add(new PurchasedListItem(item, this.sale.getPurchased().get((Product) item), false));
     }
 
     public double purchaseTotalFromList(JPanel list) {
@@ -145,6 +149,17 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         for (Component c : list.getComponents()) {
             PurchasedListItem item = (PurchasedListItem) c;
             map.put((Material) item.getItem(), item.getQuantity());
+        }
+        
+        return map;
+    }
+    
+    public HashMap<Product, Integer> saleListToMap(JPanel list) {
+        HashMap<Product, Integer> map = new HashMap<>();
+        
+        for (Component c : list.getComponents()) {
+            PurchasedListItem item = (PurchasedListItem) c;
+            map.put((Product) item.getItem(), item.getQuantity());
         }
         
         return map;
@@ -170,12 +185,12 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         }
     }
     
-    public void saleListItem1MousePressed(MouseEvent evt) {
-        int option = JOptionPane.showConfirmDialog(this, "Desea eliminar el material de la lista?", "Eliminar elemento", JOptionPane.OK_CANCEL_OPTION);
+    public void soldListItemMousePressed(MouseEvent evt) {
+        int option = JOptionPane.showConfirmDialog(this, "Desea eliminar el producto de la lista?", "Eliminar elemento", JOptionPane.OK_CANCEL_OPTION);
         
         if (option == JOptionPane.OK_OPTION) {
-            this.purchasedItemsPanel1.remove(evt.getComponent());
-            this.purchaseTotalLabel1.setText(Double.toString(this.purchaseTotalFromList(this.purchasedItemsPanel1)));
+            this.soldItemsPanel.remove(evt.getComponent());
+            this.saleTotalLabel.setText(Double.toString(this.purchaseTotalFromList(this.soldItemsPanel)));
         }
     }
     
@@ -304,10 +319,10 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         deleteButton1 = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jLabel42 = new javax.swing.JLabel();
-        providerNameLabel1 = new javax.swing.JLabel();
-        purchaseTotalLabel2 = new javax.swing.JLabel();
+        clientNameLabel = new javax.swing.JLabel();
+        saleTotalLabel1 = new javax.swing.JLabel();
         jLabel43 = new javax.swing.JLabel();
-        providerIdLabel1 = new javax.swing.JLabel();
+        clientIdLabel = new javax.swing.JLabel();
         returnButton2 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         idLabel1 = new javax.swing.JLabel();
@@ -327,7 +342,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         jPanel37 = new javax.swing.JPanel();
         label31 = new javax.swing.JLabel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        purchasedItemsPanel2 = new javax.swing.JPanel();
+        soldItemsPanel1 = new javax.swing.JPanel();
         jLabel44 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         dateLabel1 = new javax.swing.JLabel();
@@ -352,15 +367,20 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         jPanel42 = new javax.swing.JPanel();
         label36 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        purchasedItemsPanel3 = new javax.swing.JPanel();
+        soldItemsPanel = new javax.swing.JPanel();
         jLabel47 = new javax.swing.JLabel();
-        providerSelect1 = new javax.swing.JComboBox<>();
         jLabel15 = new javax.swing.JLabel();
-        purchaseTotalLabel3 = new javax.swing.JLabel();
+        saleTotalLabel = new javax.swing.JLabel();
         cancelButton1 = new javax.swing.JButton();
         dateChooser1 = new com.toedter.calendar.JDateChooser();
         confirmButton1 = new javax.swing.JButton();
         addItemButton1 = new javax.swing.JButton();
+        clientIdField = new javax.swing.JTextField();
+        searchClientButton = new javax.swing.JButton();
+        jLabel48 = new javax.swing.JLabel();
+        paymentMethodSelect = new javax.swing.JComboBox<>();
+        jLabel49 = new javax.swing.JLabel();
+        clientNameField = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(960, 610));
         setLayout(new java.awt.BorderLayout());
@@ -924,7 +944,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         sales.add(addSaleButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 110, 110, 50));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel9.setText("Gestionar Compras");
+        jLabel9.setText("Gestionar Ventas");
         sales.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 70, 350, 40));
 
         salesPanel.setBackground(new java.awt.Color(153, 153, 153));
@@ -1021,12 +1041,12 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         sales.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 180, -1, -1));
 
-        salesTab.add(sales, "purchases");
+        salesTab.add(sales, "sales");
 
         seeSales.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel10.setText("Ver Compra");
+        jLabel10.setText("Ver Venta");
         seeSales.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 30, 240, 40));
 
         deleteButton1.setBackground(new java.awt.Color(42, 39, 41));
@@ -1047,28 +1067,28 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         seeSales.add(deleteButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 500, 160, 50));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel11.setText("Nombre Proveedor:");
+        jLabel11.setText("Nombre Cliente:");
         seeSales.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 160, 160, 20));
 
         jLabel42.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel42.setText("Materiales Comprados:");
         seeSales.add(jLabel42, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 220, 160, 20));
 
-        providerNameLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        providerNameLabel1.setText("NULL");
-        seeSales.add(providerNameLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 180, 460, 20));
+        clientNameLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clientNameLabel.setText("NULL");
+        seeSales.add(clientNameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 180, 460, 20));
 
-        purchaseTotalLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        purchaseTotalLabel2.setText("NULL");
-        seeSales.add(purchaseTotalLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 480, 210, 20));
+        saleTotalLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        saleTotalLabel1.setText("NULL");
+        seeSales.add(saleTotalLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 480, 210, 20));
 
         jLabel43.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel43.setText("ID Proveedor:");
+        jLabel43.setText("ID Cliente:");
         seeSales.add(jLabel43, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 110, 160, 20));
 
-        providerIdLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        providerIdLabel1.setText("NULL");
-        seeSales.add(providerIdLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 460, 20));
+        clientIdLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clientIdLabel.setText("NULL");
+        seeSales.add(clientIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 460, 20));
 
         returnButton2.setBackground(new java.awt.Color(42, 39, 41));
         returnButton2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -1088,7 +1108,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         seeSales.add(returnButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 160, 50));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel12.setText("Total Compra:");
+        jLabel12.setText("Total Venta:");
         seeSales.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 480, 150, 20));
 
         idLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -1183,14 +1203,14 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         seeSales.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 250, -1, -1));
 
-        purchasedItemsPanel2.setBackground(new java.awt.Color(153, 153, 153));
-        purchasedItemsPanel2.setLayout(new javax.swing.BoxLayout(purchasedItemsPanel2, javax.swing.BoxLayout.PAGE_AXIS));
-        jScrollPane6.setViewportView(purchasedItemsPanel2);
+        soldItemsPanel1.setBackground(new java.awt.Color(153, 153, 153));
+        soldItemsPanel1.setLayout(new javax.swing.BoxLayout(soldItemsPanel1, javax.swing.BoxLayout.PAGE_AXIS));
+        jScrollPane6.setViewportView(soldItemsPanel1);
 
         seeSales.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 300, 800, 170));
 
         jLabel44.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel44.setText("Fecha de Compra:");
+        jLabel44.setText("Fecha de Venta:");
         seeSales.add(jLabel44, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 160, 20));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -1199,7 +1219,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         dateLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         dateLabel1.setText("NULL");
-        seeSales.add(dateLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 470, 20));
+        seeSales.add(dateLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 290, 20));
 
         salesTab.add(seeSales, "see");
 
@@ -1211,11 +1231,11 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         jLabel45.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel45.setText("Productos Comprados:");
-        addSale.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 190, 220, 20));
+        addSale.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 250, 220, 20));
 
         jLabel46.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel46.setText("Cliente");
-        addSale.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 110, 160, 20));
+        jLabel46.setText("ID del Cliente:");
+        addSale.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 110, 160, 20));
 
         returnButton3.setBackground(new java.awt.Color(42, 39, 41));
         returnButton3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -1320,28 +1340,25 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         jPanel8.add(jPanel42);
 
-        addSale.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 220, -1, -1));
+        addSale.add(jPanel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, -1, 50));
 
-        purchasedItemsPanel3.setBackground(new java.awt.Color(153, 153, 153));
-        purchasedItemsPanel3.setLayout(new javax.swing.BoxLayout(purchasedItemsPanel3, javax.swing.BoxLayout.PAGE_AXIS));
-        jScrollPane7.setViewportView(purchasedItemsPanel3);
+        soldItemsPanel.setBackground(new java.awt.Color(153, 153, 153));
+        soldItemsPanel.setLayout(new javax.swing.BoxLayout(soldItemsPanel, javax.swing.BoxLayout.PAGE_AXIS));
+        jScrollPane7.setViewportView(soldItemsPanel);
 
-        addSale.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 800, 230));
+        addSale.add(jScrollPane7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 320, 800, 180));
 
         jLabel47.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel47.setText("Fecha de Venta:");
-        addSale.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 160, 20));
-
-        providerSelect1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        addSale.add(providerSelect1, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 130, 210, 30));
+        jLabel47.setText("Método de Pago");
+        addSale.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 160, 20));
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel15.setText("Total Compra:");
         addSale.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 510, 150, 20));
 
-        purchaseTotalLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        purchaseTotalLabel3.setText("0");
-        addSale.add(purchaseTotalLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 510, 210, 20));
+        saleTotalLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        saleTotalLabel.setText("0");
+        addSale.add(saleTotalLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 510, 210, 20));
 
         cancelButton1.setBackground(new java.awt.Color(42, 39, 41));
         cancelButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -1359,6 +1376,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         confirmButton1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirmButton1.setForeground(new java.awt.Color(204, 204, 204));
         confirmButton1.setText("Añadir");
+        confirmButton1.setEnabled(false);
         confirmButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 confirmButton1ActionPerformed(evt);
@@ -1375,7 +1393,53 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
                 addItemButton1ActionPerformed(evt);
             }
         });
-        addSale.add(addItemButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 180, 40, 40));
+        addSale.add(addItemButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 230, 40, 40));
+
+        clientIdField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clientIdField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientIdFieldActionPerformed(evt);
+            }
+        });
+        addSale.add(clientIdField, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 130, 240, 30));
+
+        searchClientButton.setBackground(new java.awt.Color(42, 39, 41));
+        searchClientButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        searchClientButton.setForeground(new java.awt.Color(204, 204, 204));
+        searchClientButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/search.png"))); // NOI18N
+        searchClientButton.setText("Buscar");
+        searchClientButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                searchClientButtonMouseReleased(evt);
+            }
+        });
+        searchClientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchClientButtonActionPerformed(evt);
+            }
+        });
+        addSale.add(searchClientButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 120, 130, 40));
+
+        jLabel48.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel48.setText("Fecha de Venta:");
+        addSale.add(jLabel48, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 160, 20));
+
+        paymentMethodSelect.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        paymentMethodSelect.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Debito", "Credito" }));
+        addSale.add(paymentMethodSelect, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, 230, 30));
+
+        jLabel49.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel49.setText("Nombre del Cliente:");
+        addSale.add(jLabel49, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 180, 160, 20));
+
+        clientNameField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        clientNameField.setEnabled(false);
+        clientNameField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clientNameFieldActionPerformed(evt);
+            }
+        });
+        addSale.add(clientNameField, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 200, 240, 30));
 
         salesTab.add(addSale, "add");
 
@@ -1385,7 +1449,6 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addPurchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPurchaseButtonActionPerformed
-        this.items.clear();
         ((CardLayout) this.purchasesTab.getLayout()).show(this.purchasesTab, "add");
     }//GEN-LAST:event_addPurchaseButtonActionPerformed
 
@@ -1441,15 +1504,16 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         int option = JOptionPane.showConfirmDialog(null, message, "Añadir Material", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            Material material = null;
-            int id = Integer.parseInt(idField.getText());
-            int quantity = Integer.parseInt(quantityField.getText());
+            Boolean exists = false;
+            int id = Helpers.tryParseInt(idField.getText());
+            int quantity = Helpers.tryParseInt(quantityField.getText());
             
             for (Material m : DesktopApplication.getInstance().getMaterials()) {
                 if (m.getId() == id) {
                     PurchasedListItem item = new PurchasedListItem(m, quantity, true);
                     this.purchasedItemsPanel1.add(item);
                     final SalesAndPurchasesMenu menu = this;
+                    exists = true;
                     
                     item.addMouseListener(new MouseAdapter() {
                         @Override
@@ -1463,7 +1527,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
                 }
             }
             
-            if (material == null)
+            if (!exists)
                 JOptionPane.showMessageDialog(this, "El material no existe", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_addItemButtonActionPerformed
@@ -1497,7 +1561,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_addSaleButtonMouseReleased
 
     private void addSaleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addSaleButtonActionPerformed
-        // TODO add your handling code here:
+        ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "add");
     }//GEN-LAST:event_addSaleButtonActionPerformed
 
     private void deleteButton1MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButton1MouseReleased
@@ -1505,7 +1569,9 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButton1MouseReleased
 
     private void deleteButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButton1ActionPerformed
-        // TODO add your handling code here:
+        DesktopApplication.getInstance().getSales().remove(this.sale);
+        this.sale = null;
+        ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "sales");
     }//GEN-LAST:event_deleteButton1ActionPerformed
 
     private void returnButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnButton2MouseReleased
@@ -1513,7 +1579,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_returnButton2MouseReleased
 
     private void returnButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButton2ActionPerformed
-        // TODO add your handling code here:
+        ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "sales");
     }//GEN-LAST:event_returnButton2ActionPerformed
 
     private void returnButton3MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_returnButton3MouseReleased
@@ -1521,20 +1587,91 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_returnButton3MouseReleased
 
     private void returnButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButton3ActionPerformed
-        // TODO add your handling code here:
+        ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "sales");
     }//GEN-LAST:event_returnButton3ActionPerformed
 
     private void cancelButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButton1ActionPerformed
-        // TODO add your handling code here:
+        ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "sales");
     }//GEN-LAST:event_cancelButton1ActionPerformed
 
     private void confirmButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButton1ActionPerformed
-        // TODO add your handling code here:
+        ArrayList<Sale> sales = DesktopApplication.getInstance().getSales();
+        sales.add(new Sale(sales.size(), PaymentMethod.valueOf((String) this.paymentMethodSelect.getSelectedItem()), this.saleClient, this.dateChooser1.getDate(), this.saleListToMap(this.soldItemsPanel)));
+        javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido la venta");
+        this.getAllSales();
+        ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "sales");
     }//GEN-LAST:event_confirmButton1ActionPerformed
 
     private void addItemButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemButton1ActionPerformed
-        // TODO add your handling code here:
+        JTextField idField = new JTextField();
+        JTextField quantityField = new JTextField();
+        Object[] message = {
+            "ID del Producto:", idField,
+            "Cantidad:", quantityField
+        };
+
+        int option = JOptionPane.showConfirmDialog(null, message, "Añadir Producto", JOptionPane.OK_CANCEL_OPTION);
+        if (option == JOptionPane.OK_OPTION) {
+            Boolean exists = false;
+            int id = Helpers.tryParseInt(idField.getText());
+            int quantity = Helpers.tryParseInt(quantityField.getText());
+            
+            for (Product p : DesktopApplication.getInstance().getProducts()) {
+                if (p.getId() == id) {
+                    PurchasedListItem item = new PurchasedListItem(p, quantity, true);
+                    this.soldItemsPanel.add(item);
+                    final SalesAndPurchasesMenu menu = this;
+                    exists = true;
+                    
+                    item.addMouseListener(new MouseAdapter() {
+                        @Override
+                        public void mousePressed(MouseEvent evt) {
+                            menu.soldListItemMousePressed(evt);
+                        }
+                    });
+                    
+                    this.saleTotalLabel.setText(Double.toString(this.purchaseTotalFromList(this.soldItemsPanel)));
+                    break;
+                }
+            }
+            
+            if (!exists)
+                JOptionPane.showMessageDialog(this, "El material no existe", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_addItemButton1ActionPerformed
+
+    private void clientIdFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientIdFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clientIdFieldActionPerformed
+
+    private void searchClientButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchClientButtonMouseReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchClientButtonMouseReleased
+
+    private void searchClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchClientButtonActionPerformed
+        Client saleClient = null;
+
+        for (Client client : DesktopApplication.getInstance().getClients()) {
+            if (client.getId() == Helpers.tryParseInt(this.clientIdField.getText())) {
+                saleClient = client;
+                break;
+            }
+        }
+
+        if (saleClient == null)
+        {
+            JOptionPane.showMessageDialog(this, "El cliente no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        this.saleClient = saleClient;
+        this.clientNameField.setText(this.saleClient.getName());
+        this.confirmButton.setEnabled(true);
+    }//GEN-LAST:event_searchClientButtonActionPerformed
+
+    private void clientNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientNameFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clientNameFieldActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -1546,6 +1683,10 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     private javax.swing.JButton addSaleButton;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton cancelButton1;
+    private javax.swing.JTextField clientIdField;
+    private javax.swing.JLabel clientIdLabel;
+    private javax.swing.JTextField clientNameField;
+    private javax.swing.JLabel clientNameLabel;
     private javax.swing.JButton confirmButton;
     private javax.swing.JButton confirmButton1;
     private com.toedter.calendar.JDateChooser dateChooser;
@@ -1581,6 +1722,8 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel47;
+    private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -1683,22 +1826,15 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     private javax.swing.JLabel label7;
     private javax.swing.JLabel label8;
     private javax.swing.JLabel label9;
+    private javax.swing.JComboBox<String> paymentMethodSelect;
     private javax.swing.JLabel providerIdLabel;
-    private javax.swing.JLabel providerIdLabel1;
     private javax.swing.JLabel providerNameLabel;
-    private javax.swing.JLabel providerNameLabel1;
     private javax.swing.JComboBox<Provider
     > providerSelect;
-    private javax.swing.JComboBox<Provider
-    > providerSelect1;
     private javax.swing.JLabel purchaseTotalLabel;
     private javax.swing.JLabel purchaseTotalLabel1;
-    private javax.swing.JLabel purchaseTotalLabel2;
-    private javax.swing.JLabel purchaseTotalLabel3;
     private javax.swing.JPanel purchasedItemsPanel;
     private javax.swing.JPanel purchasedItemsPanel1;
-    private javax.swing.JPanel purchasedItemsPanel2;
-    private javax.swing.JPanel purchasedItemsPanel3;
     private javax.swing.JPanel purchases;
     private javax.swing.JPanel purchasesPanel;
     private javax.swing.JPanel purchasesTab;
@@ -1706,12 +1842,17 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     private javax.swing.JButton returnButton1;
     private javax.swing.JButton returnButton2;
     private javax.swing.JButton returnButton3;
+    private javax.swing.JLabel saleTotalLabel;
+    private javax.swing.JLabel saleTotalLabel1;
     private javax.swing.JPanel sales;
     private javax.swing.JPanel salesPanel;
     private javax.swing.JPanel salesTab;
+    private javax.swing.JButton searchClientButton;
     private javax.swing.JTextField searchTextField1;
     private javax.swing.JTextField searchTextField2;
     private javax.swing.JPanel seePurchases;
     private javax.swing.JPanel seeSales;
+    private javax.swing.JPanel soldItemsPanel;
+    private javax.swing.JPanel soldItemsPanel1;
     // End of variables declaration//GEN-END:variables
 }

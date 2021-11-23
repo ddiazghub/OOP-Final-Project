@@ -14,6 +14,7 @@ import application.logic.*;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  *
@@ -32,6 +33,7 @@ public class DesktopApplication extends JFrame {
     private ArrayList<Material> materials;
     private ArrayList<Product> products;
     private Profile currentProfile;
+    private HashMap<Purchasable, Integer> stock;
     
     private DesktopApplication() {
         super("Carpintería Peña");
@@ -44,6 +46,7 @@ public class DesktopApplication extends JFrame {
         this.materials = new ArrayList<>();
         this.products = new ArrayList<>();
         this.clients = new ArrayList<>();
+        this.stock = new HashMap<>();
         
         this.currentProfile = null;
         this.personel.add(new Personel(0, 4000000, Helpers.dateFrom(2014, 9, 11), PersonelType.Gerente, "Juan Peña Mesa", Helpers.dateFrom(1985, 2, 10), 3003463, "carpipeña@gmail.com", System.getenv("USERPROFILE") + "\\Documents\\NetBeansProjects\\GUIPeña\\testProfileImages\\360_F_222851624_jfoMGbJxwRi5AWGdPgXKSABMnzCQo9RN.jpg"));
@@ -83,6 +86,18 @@ public class DesktopApplication extends JFrame {
 
     public ArrayList<Client> getClients() {
         return clients;
+    }
+
+    public HashMap<Purchasable, Integer> getStock() {
+        return stock;
+    }
+
+    public Profile getCurrentProfile() {
+        return currentProfile;
+    }
+
+    public void setCurrentProfile(Profile currentProfile) {
+        this.currentProfile = currentProfile;
     }
     
     public void init() {

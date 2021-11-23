@@ -4,7 +4,16 @@
  */
 package application.views;
 
+import application.DesktopApplication;
+import application.logic.Helpers;
+import application.logic.MySecurityManager;
+import application.logic.Profile;
 import java.awt.CardLayout;
+import java.io.File;
+import java.util.Arrays;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -12,13 +21,37 @@ import java.awt.CardLayout;
  */
 public class ProfileMenu extends javax.swing.JPanel {
 
+    private Profile profile;
+    private String profileImagePath;
     /**
      * Creates new form Home
      */
     public ProfileMenu() {
         initComponents();
+        
+        this.profile = DesktopApplication.getInstance().getCurrentProfile();
+        this.refresh();
     }
 
+    public void refresh() {
+        this.imageField1.setIcon(Helpers.readIconFromFile(new File(this.profile.getPersonel().getImagePath())));
+        this.imageField2.setIcon(Helpers.readIconFromFile(new File(this.profile.getPersonel().getImagePath())));
+        this.nameLabel.setText(this.profile.getPersonel().getName());
+        this.emailLabel.setText(this.profile.getPersonel().getEmail());
+        this.phoneNumberLabel.setText(Integer.toString(this.profile.getPersonel().getPhoneNumber()));
+        this.birthdayLabel.setText(Helpers.formatDate(this.profile.getPersonel().getBirthDay()));
+        this.admissionDateLabel.setText(Helpers.formatDate(this.profile.getPersonel().getAdmissionDate()));
+        this.jobLabel.setText(this.profile.getPersonel().getType().toString());
+        this.usernameLabel.setText(this.profile.getUsername());
+        this.passwordField.setText("");
+        this.confirmationField.setText("");
+        this.nameTextField.setText(this.profile.getPersonel().getName());
+        this.emailTextField.setText(this.profile.getPersonel().getEmail());
+        this.phoneNumberTextField.setText(Integer.toString(this.profile.getPersonel().getPhoneNumber()));
+        this.birthdayChooser.setDate(this.profile.getPersonel().getBirthDay());
+        this.usernameTextField.setText(this.profile.getUsername());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,7 +62,7 @@ public class ProfileMenu extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        imageField1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         editButton = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -42,35 +75,35 @@ public class ProfileMenu extends javax.swing.JPanel {
         nameLabel = new javax.swing.JLabel();
         admissionDateLabel = new javax.swing.JLabel();
         birthdayLabel = new javax.swing.JLabel();
-        positionLabel = new javax.swing.JLabel();
+        jobLabel = new javax.swing.JLabel();
         phoneNumberLabel = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
+        setPictureButton = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         cancelButton = new javax.swing.JButton();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        imageField2 = new javax.swing.JLabel();
         usernameTextField = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
-        passwordTextField = new javax.swing.JTextField();
         emailTextField = new javax.swing.JTextField();
         phoneNumberTextField = new javax.swing.JTextField();
-        BirthdayTextField = new javax.swing.JTextField();
         nameTextField = new javax.swing.JTextField();
-        confirmationTextField = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         confirmButton = new javax.swing.JButton();
+        birthdayChooser = new com.toedter.calendar.JDateChooser();
+        confirmationField = new javax.swing.JPasswordField();
+        passwordField = new javax.swing.JPasswordField();
 
         setPreferredSize(new java.awt.Dimension(960, 610));
         setLayout(new java.awt.CardLayout());
 
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/008.png"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
+        imageField1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/504-5040528_empty-profile-picture-png-transparent-png.png"))); // NOI18N
+        jPanel1.add(imageField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel4.setText("Mi Perfil");
@@ -134,10 +167,10 @@ public class ProfileMenu extends javax.swing.JPanel {
         birthdayLabel.setText("NULL");
         jPanel1.add(birthdayLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 350, 470, 20));
 
-        positionLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        positionLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        positionLabel.setText("Gerente");
-        jPanel1.add(positionLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 530, 310, 20));
+        jobLabel.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jobLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jobLabel.setText("Gerente");
+        jPanel1.add(jobLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 530, 310, 20));
 
         phoneNumberLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         phoneNumberLabel.setText("NULL");
@@ -146,6 +179,16 @@ public class ProfileMenu extends javax.swing.JPanel {
         add(jPanel1, "seeProfile");
 
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        setPictureButton.setBackground(new java.awt.Color(42, 39, 41));
+        setPictureButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        setPictureButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/edit.png"))); // NOI18N
+        setPictureButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setPictureButtonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(setPictureButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, -1, -1));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel8.setText("Mi Perfil");
@@ -178,11 +221,8 @@ public class ProfileMenu extends javax.swing.JPanel {
         jLabel14.setText("Número de Teléfono:");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 240, 350, 20));
 
-        jLabel15.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/008.png"))); // NOI18N
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 30, 40));
-
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/008.png"))); // NOI18N
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
+        imageField2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/504-5040528_empty-profile-picture-png-transparent-png.png"))); // NOI18N
+        jPanel2.add(imageField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 330, 390));
 
         usernameTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel2.add(usernameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 100, 410, 30));
@@ -190,14 +230,6 @@ public class ProfileMenu extends javax.swing.JPanel {
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel16.setText("Nombre de Usuario:");
         jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 80, 150, 20));
-
-        passwordTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        passwordTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordTextFieldActionPerformed(evt);
-            }
-        });
-        jPanel2.add(passwordTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 420, 410, 30));
 
         emailTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         emailTextField.addActionListener(new java.awt.event.ActionListener() {
@@ -210,9 +242,6 @@ public class ProfileMenu extends javax.swing.JPanel {
         phoneNumberTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jPanel2.add(phoneNumberTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 260, 410, 30));
 
-        BirthdayTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jPanel2.add(BirthdayTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, 410, 30));
-
         nameTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         nameTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -220,14 +249,6 @@ public class ProfileMenu extends javax.swing.JPanel {
             }
         });
         jPanel2.add(nameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 520, 370, 30));
-
-        confirmationTextField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        confirmationTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmationTextFieldActionPerformed(evt);
-            }
-        });
-        jPanel2.add(confirmationTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, 410, 30));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel17.setText("Cambiar Contraseña:");
@@ -243,6 +264,20 @@ public class ProfileMenu extends javax.swing.JPanel {
             }
         });
         jPanel2.add(confirmButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
+        jPanel2.add(birthdayChooser, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, 410, 30));
+
+        confirmationField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        confirmationField.setPreferredSize(new java.awt.Dimension(410, 30));
+        jPanel2.add(confirmationField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 450, -1, -1));
+
+        passwordField.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        passwordField.setPreferredSize(new java.awt.Dimension(410, 30));
+        passwordField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordFieldActionPerformed(evt);
+            }
+        });
+        jPanel2.add(passwordField, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 420, -1, -1));
 
         add(jPanel2, "editProfile");
     }// </editor-fold>//GEN-END:initComponents
@@ -259,61 +294,83 @@ public class ProfileMenu extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailTextFieldActionPerformed
 
-    private void passwordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordTextFieldActionPerformed
-
     private void nameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameTextFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nameTextFieldActionPerformed
-
-    private void confirmationTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmationTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_confirmationTextFieldActionPerformed
-
-    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        ((CardLayout) this.getLayout()).show(this, "seeProfile");
-    }//GEN-LAST:event_confirmButtonActionPerformed
 
     private void editButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseReleased
 
     }//GEN-LAST:event_editButtonMouseReleased
 
+    private void setPictureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setPictureButtonActionPerformed
+        JFileChooser choice = new JFileChooser();
+        choice.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "jpeg"));
+        choice.setAcceptAllFileFilterUsed(false);
+
+        if (choice.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            this.profileImagePath = choice.getSelectedFile().getAbsolutePath();
+            this.imageField2.setIcon(Helpers.readIconFromFile(choice.getSelectedFile()));
+        }
+    }//GEN-LAST:event_setPictureButtonActionPerformed
+
+    private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        if (this.passwordField.getPassword().length > 0) {
+            if (!MySecurityManager.getInstance().comparePasswords(this.passwordField.getPassword(), this.confirmationField.getPassword())) {
+                JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }
+        
+        this.profile.setUsername(this.usernameTextField.getText());
+        this.profile.getPersonel().setEmail(this.emailTextField.getText());
+        this.profile.getPersonel().setPhoneNumber(Helpers.tryParseInt(this.phoneNumberTextField.getText()));
+        this.profile.getPersonel().setBirthDay(this.birthdayChooser.getDate());
+        this.profile.getPersonel().setName(this.nameTextField.getText());
+        this.profile.setPasswordHash(MySecurityManager.getInstance().hash(this.passwordField.getPassword()));
+        this.profile.getPersonel().setImagePath(this.profileImagePath);
+        this.refresh();
+        ((CardLayout) this.getLayout()).show(this, "seeProfile");
+    }//GEN-LAST:event_confirmButtonActionPerformed
+
+    private void passwordFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordFieldActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField BirthdayTextField;
     private javax.swing.JLabel admissionDateLabel;
+    private com.toedter.calendar.JDateChooser birthdayChooser;
     private javax.swing.JLabel birthdayLabel;
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton confirmButton;
-    private javax.swing.JTextField confirmationTextField;
+    private javax.swing.JPasswordField confirmationField;
     private javax.swing.JButton editButton;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailTextField;
+    private javax.swing.JLabel imageField1;
+    private javax.swing.JLabel imageField2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jobLabel;
     private javax.swing.JLabel nameLabel;
     private javax.swing.JTextField nameTextField;
-    private javax.swing.JTextField passwordTextField;
+    private javax.swing.JPasswordField passwordField;
     private javax.swing.JLabel phoneNumberLabel;
     private javax.swing.JTextField phoneNumberTextField;
-    private javax.swing.JLabel positionLabel;
+    private javax.swing.JButton setPictureButton;
     private javax.swing.JLabel usernameLabel;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables

@@ -132,16 +132,15 @@ public class Login extends javax.swing.JPanel {
     private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
         String mockUsername = "admin";
         char[] mockPassword = "admin".toCharArray();
-        Profile loggedProfile = null;
         
         for (Profile profile : DesktopApplication.getInstance().getProfiles()) {
             if (profile.getUsername().equals(this.usernameField.getText()) && MySecurityManager.getInstance().verify(this.passwordField.getPassword(), profile.getPasswordHash())) {
-                loggedProfile = profile;
+                DesktopApplication.getInstance().setCurrentProfile(profile);
                 break;
             }
         }
         
-        if (loggedProfile == null) {
+        if (DesktopApplication.getInstance().getCurrentProfile() == null) {
             JOptionPane.showMessageDialog(this, "El nombre de usuario y/o la contraseña son incorrectos", "Error de Autenticación", JOptionPane.ERROR_MESSAGE);
             return;
         }

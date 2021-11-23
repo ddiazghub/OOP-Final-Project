@@ -733,6 +733,11 @@ public class AdministratorMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_addProfileButtonActionPerformed
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
+        if (!MySecurityManager.getInstance().comparePasswords(this.passwordField.getPassword(), this.confirmationField.getPassword())) {
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
         DesktopApplication.getInstance().getProfiles().add(new Profile(this.usernameTextField.getText(), MySecurityManager.getInstance().hash(this.passwordField.getPassword()), this.profileEmployee, ProfileRole.valueOf((String) this.profileRoleSelect.getSelectedItem())));
         javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el perfil");
         this.getAllProfiles();
@@ -767,7 +772,7 @@ public class AdministratorMenu extends javax.swing.JPanel {
         Personel profilePersonel = null;
         
         for (Personel employee : DesktopApplication.getInstance().getPersonel()) {
-            if (employee.getId() == Integer.parseInt(this.employeeIdField.getText())) {
+            if (employee.getId() == Helpers.tryParseInt(this.employeeIdField.getText())) {
                 profilePersonel = employee;
                 break;
             }

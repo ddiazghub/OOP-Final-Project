@@ -10,6 +10,6 @@ package application.logic;
  */
 public enum ClientMembershipType {
     Nuevo,
-    Estándar,
+    Estandar,
     Platino
 }
