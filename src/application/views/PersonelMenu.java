@@ -148,7 +148,6 @@ public class PersonelMenu extends javax.swing.JPanel {
         jobLabel = new javax.swing.JLabel();
         phoneNumberLabel = new javax.swing.JLabel();
         returnButton = new javax.swing.JButton();
-        editButton = new javax.swing.JButton();
         salaryLabel = new javax.swing.JLabel();
         jLabel41 = new javax.swing.JLabel();
         idLabel = new javax.swing.JLabel();
@@ -482,23 +481,6 @@ public class PersonelMenu extends javax.swing.JPanel {
         });
         seePersonel.add(returnButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 30, 160, 50));
 
-        editButton.setBackground(new java.awt.Color(42, 39, 41));
-        editButton.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        editButton.setForeground(new java.awt.Color(204, 204, 204));
-        editButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/res/icons/edit.png"))); // NOI18N
-        editButton.setText("Editar");
-        editButton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                editButtonMouseReleased(evt);
-            }
-        });
-        editButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                editButtonActionPerformed(evt);
-            }
-        });
-        seePersonel.add(editButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 500, 160, 50));
-
         salaryLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         salaryLabel.setText("NULL");
         seePersonel.add(salaryLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 430, 480, 20));
@@ -577,14 +559,6 @@ public class PersonelMenu extends javax.swing.JPanel {
         ((CardLayout) this.getLayout()).show(this, "personelHome");
     }//GEN-LAST:event_returnButtonActionPerformed
 
-    private void editButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editButtonMouseReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonMouseReleased
-
-    private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_editButtonActionPerformed
-
     private void setPictureButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setPictureButtonActionPerformed
         JFileChooser choice = new JFileChooser();
         choice.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "png", "gif", "jpeg"));
@@ -607,7 +581,6 @@ public class PersonelMenu extends javax.swing.JPanel {
     private javax.swing.JButton cancelButton;
     private javax.swing.JButton confirmButton;
     private javax.swing.JButton deleteButton;
-    private javax.swing.JButton editButton;
     private javax.swing.JButton editButton2;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JTextField emailTextField;

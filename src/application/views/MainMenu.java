@@ -42,16 +42,16 @@ public class MainMenu extends javax.swing.JPanel {
         this.tabArea.add(new ProfileMenu(), "profile");
         this.menuItems = new ArrayList<>();
         
-        this.menuItems.add(new ListMenuItemData("src/res/icons/sale.png", "Compras y Ventas", "sales"));
-        this.menuItems.add(new ListMenuItemData("src/res/icons/productStock.png", "Inventario", "stock"));
-        this.menuItems.add(new ListMenuItemData("src/res/icons/personel.png", "Personal", "personel"));
-        this.menuItems.add(new ListMenuItemData("src/res/icons/client.png", "Clientes", "clients"));
+        this.menuItems.add(new ListMenuItemData("res/icons/sale.png", "Compras y Ventas", "sales"));
+        this.menuItems.add(new ListMenuItemData("res/icons/productStock.png", "Inventario", "stock"));
+        this.menuItems.add(new ListMenuItemData("res/icons/personel.png", "Personal", "personel"));
+        this.menuItems.add(new ListMenuItemData("res/icons/client.png", "Clientes", "clients"));
         
         if (DesktopApplication.getInstance().getCurrentProfile().getRole() == ProfileRole.Admin)
-            this.menuItems.add(new ListMenuItemData("src/res/icons/admin.png", "Administrador", "admin"));
+            this.menuItems.add(new ListMenuItemData("res/icons/admin.png", "Administrador", "admin"));
             
-        this.menuItems.add(new ListMenuItemData("src/res/icons/profile.png", "Mi Perfil", "profile"));
-        this.menuItems.add(new ListMenuItemData("src/res/icons/quit.png", "Salir", "quit"));
+        this.menuItems.add(new ListMenuItemData("res/icons/profile.png", "Mi Perfil", "profile"));
+        this.menuItems.add(new ListMenuItemData("res/icons/quit.png", "Salir", "quit"));
         
         for (ListMenuItemData item : this.menuItems) {
             MenuButton newItem = new MenuButton(item.icon, item.text);
