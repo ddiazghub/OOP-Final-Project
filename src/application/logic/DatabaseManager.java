@@ -74,7 +74,7 @@ public class DatabaseManager {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
-            JOptionPane.showMessageDialog(DesktopApplication.getInstance(), "No se ha podido establecer la conexión a la base de datos", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(DesktopApplication.getInstance(), "No se ha podido establecer la conexión a la base de datos." + e.getClass().getName()+": "+e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
