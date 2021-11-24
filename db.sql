@@ -243,6 +243,16 @@ CREATE TABLE public."ProductStock"
 ALTER TABLE public."ProductStock"
     OWNER to postgres;
 
+CREATE TABLE public."PasswordSalt"
+(
+    "Salt" bytea NOT NULL
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public."PasswordSalt"
+    OWNER to postgres;
+    
 INSERT INTO public."PaymentMethods"("Name")
 	VALUES ('Efectivo'),
     ('Debito'),
@@ -281,3 +291,9 @@ TABLESPACE pg_default;
 
 ALTER TABLE public."MaterialStock"
     OWNER to postgres;
+
+INSERT INTO public."Providers"(
+"Name", "City", "StreetAddress", "PhoneNumber", "Email")
+VALUES ('Maderas Barranquilla', 'Barranquilla', 'Cra 53 # 64 - 25', 3012934, 'maderasbaquilla@hotmail.com'),
+('Leña Fernández', 'Barranquilla', 'Cra 89 # 34 - 95', 3967876, 'amfernandez@gmail.com'),
+('Ferreteria el Lugar', 'Puerto Colombia', 'Cra 19 # 24 - 56', 3462453, 'ellugarferreteria@gmail.com')

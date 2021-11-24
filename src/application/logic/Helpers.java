@@ -98,7 +98,7 @@ public class Helpers {
         try {
             while(keys.hasNext()) {
                 String key = keys.next();
-                map.put(DatabaseManager.selectProduct((Integer) json.get(key)), Integer.parseInt(key));
+                map.put(DatabaseManager.selectProduct(Integer.parseInt(key)), (Integer) json.get(key));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,7 +114,7 @@ public class Helpers {
         try {
             while(keys.hasNext()) {
                 String key = keys.next();
-                map.put(DatabaseManager.selectMaterial((Integer) json.get(key)), Integer.parseInt(key));
+                map.put(DatabaseManager.selectMaterial(Integer.parseInt(key)), (Integer) json.get(key));
             }
         } catch (Exception e) {
             e.printStackTrace();

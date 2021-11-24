@@ -6,6 +6,7 @@ package application.views;
 
 import application.DesktopApplication;
 import application.components.PersonelListItem;
+import application.logic.DatabaseManager;
 import application.logic.PersonelType;
 import java.awt.CardLayout;
 import java.awt.event.MouseAdapter;
@@ -47,7 +48,7 @@ public class PersonelMenu extends javax.swing.JPanel {
         this.personelPanel.removeAll();
         final PersonelMenu menu = this;
         
-        for (Personel employee : DesktopApplication.getInstance().getPersonel()) {
+        for (Personel employee : DatabaseManager.selectPersonel()) {
             PersonelListItem item = new PersonelListItem(employee);
             this.personelPanel.add(item);
 
@@ -552,11 +553,10 @@ public class PersonelMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_nameTextFieldActionPerformed
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el empleado");
-        ArrayList<Personel> personel = DesktopApplication.getInstance().getPersonel();
-        personel.add(new Personel(personel.size(), 4000000, this.admissionDateCalendar.getDate(), PersonelType.valueOf((String) this.jobSelect.getSelectedItem()), this.nameTextField.getText(), this.birthdayCalendar.getDate(), Helpers.tryParseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText(), this.profileImagePath));
+        DatabaseManager.insertPersonel(new Personel(-1, 4000000, this.admissionDateCalendar.getDate(), PersonelType.valueOf((String) this.jobSelect.getSelectedItem()), this.nameTextField.getText(), this.birthdayCalendar.getDate(), Helpers.tryParseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText(), this.profileImagePath));
         ((CardLayout) this.getLayout()).show(this, "personelHome");
         this.getAllPersonel();
+        javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el empleado");
     }//GEN-LAST:event_confirmButtonActionPerformed
 
     private void deleteButtonMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deleteButtonMouseReleased
@@ -564,7 +564,7 @@ public class PersonelMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonMouseReleased
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        DesktopApplication.getInstance().getPersonel().remove(this.personel);
+        DatabaseManager.removePersonel(this.personel.getId());
         this.personel = null;
         ((CardLayout) this.getLayout()).show(this, "personelHome");
     }//GEN-LAST:event_deleteButtonActionPerformed

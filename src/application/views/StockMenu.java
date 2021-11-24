@@ -10,6 +10,7 @@ import application.components.PurchasedListItem;
 import application.components.SalesListItem;
 import application.components.StockListItem;
 import application.logic.Client;
+import application.logic.DatabaseManager;
 import application.logic.Helpers;
 import application.logic.Material;
 import application.logic.PaymentMethod;
@@ -74,20 +75,10 @@ public class StockMenu extends javax.swing.JPanel {
         this.productsPanel.removeAll();
         final StockMenu menu = this;
         
-        for (Product p : DesktopApplication.getInstance().getProducts()) {
-            StockListItem item = new StockListItem(p, DesktopApplication.getInstance().getStock().get(p));
-            this.productsPanel.add(item);
-
-            item.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent evt) {
-                    menu.purchaseListItemMousePressed(evt);
-                }
-            });
-        }
+        HashMap<Purchasable, Integer> stock = DatabaseManager.selectStock();
         
-        for (Material m : DesktopApplication.getInstance().getMaterials()) {
-            StockListItem item = new StockListItem(m, DesktopApplication.getInstance().getStock().get(m));
+        for (Purchasable p : stock.keySet()) {
+            StockListItem item = new StockListItem(p, stock.get(p));
             this.productsPanel.add(item);
 
             item.addMouseListener(new MouseAdapter() {
@@ -146,11 +137,13 @@ public class StockMenu extends javax.swing.JPanel {
         int option = JOptionPane.showConfirmDialog(null, message, "Añadir", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
             int quantity = Helpers.tryParseInt(quantityField.getText());
-            HashMap<Purchasable, Integer> stock = DesktopApplication.getInstance().getStock();
             try {   
-                stock.put(item, stock.get(item) + quantity);
+                if (item instanceof Product)
+                    DatabaseManager.updateProductStock(item.getId(), quantity);
+                else
+                    DatabaseManager.updateMaterialStock(item.getId(), quantity);
             } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "El elemento no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                e.printStackTrace();
             }
         }
         
@@ -320,21 +313,11 @@ public class StockMenu extends javax.swing.JPanel {
 
         int option = JOptionPane.showConfirmDialog(this, message, "Añadir Material/Producto", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            ArrayList<Material> materials = DesktopApplication.getInstance().getMaterials();
-            ArrayList<Product> products = DesktopApplication.getInstance().getProducts();
-            HashMap<Purchasable, Integer> stock = DesktopApplication.getInstance().getStock();
-            
-            if (((String)typeSelect.getSelectedItem()).equals("Material")) {
-                Material m = new Material(materials.size(), nameField.getText(), Helpers.tryParseDouble(costField.getText()), descriptionField.getText());
-                materials.add(m);
-                stock.put(m, 0);
-            } else {
-                Product m = new Product(products.size(), nameField.getText(), Helpers.tryParseDouble(costField.getText()), descriptionField.getText());
-                products.add(m);
-                stock.put(m, 0);
-            }
+            if (((String)typeSelect.getSelectedItem()).equals("Material"))
+                DatabaseManager.insertMaterial(new Material(-1, nameField.getText(), Helpers.tryParseDouble(costField.getText()), descriptionField.getText()));
+            else
+                DatabaseManager.insertProduct(new Product(-1, nameField.getText(), Helpers.tryParseDouble(costField.getText()), descriptionField.getText()));
         }
-        
         this.getAllProducts();
     }//GEN-LAST:event_addItemButtonActionPerformed
 

@@ -5,9 +5,11 @@
 package application.logic;
 
 import application.DesktopApplication;
+import java.security.SecureRandom;
 import java.sql.*;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Properties;
 import javax.swing.JOptionPane;
@@ -18,6 +20,7 @@ import org.json.JSONObject;
  * @author david
  */
 public class DatabaseManager {
+    public static byte[] salt;
     private static DatabaseManager instance;
     private Connection connection;
     private HashMap<String, String> queries;
@@ -61,6 +64,13 @@ public class DatabaseManager {
             if (selectProfiles().isEmpty())
                 insertProfile(new Profile("carpiadmin", MySecurityManager.getInstance().hash("carpiadmin".toCharArray()), personel.get(0), ProfileRole.Admin));
 
+            if (getSalt() == null) {
+                SecureRandom random = new SecureRandom();
+                salt = new byte[16];
+                random.nextBytes(salt);
+                System.out.println(Arrays.toString(salt));
+                setSalt(salt);
+            }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
             System.err.println(e.getClass().getName()+": "+e.getMessage());
@@ -68,7 +78,74 @@ public class DatabaseManager {
         }
     }
     
-    public static ArrayList<Client> selectAllClients() {
+    public static void removeProfile(int id) {
+        removeById("Profiles", id);
+    }
+    
+    public static void removeClient(int id) {
+        removeById("Clients", id);
+    }
+    
+    public static void removePersonel(int id) {
+        removeById("Personel", id);
+    }
+    
+    public static void removePurchase(int id) {
+        removeById("Purchases", id);
+    }
+    
+    public static void removeSale(int id) {
+        removeById("Sales", id);
+    }
+    
+    public static void removeById(String table, int id) {
+        try {
+            PreparedStatement st = instance.connection.prepareStatement("DELETE FROM public.\"?\"\n" + "WHERE \"Id\"=?");
+            st.setString(1, table);
+            st.setInt(2, id);
+            ResultSet rs = st.executeQuery();
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public static byte[] getSalt() {
+        byte[] salt = null;
+        
+        try {
+            Statement st = instance.connection.createStatement();
+            ResultSet rs = st.executeQuery("SELECT * FROM public.\"PasswordSalt\"");
+            
+            if (rs.next())
+                salt = rs.getBytes("Salt");
+            
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return salt;
+    }
+    
+    public static void setSalt(byte[] salt) {
+        try {
+            PreparedStatement st = instance.connection.prepareStatement("INSERT INTO public.\"PasswordSalt\"(\n" +
+"	\"Salt\")\n" +
+"	VALUES (?)");
+            st.setBytes(1, salt);
+            ResultSet rs = st.executeQuery();
+            rs.close();
+            st.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    public static ArrayList<Client> selectClients() {
         ArrayList<Client> clients = null;
         
         try {
@@ -379,7 +456,7 @@ public class DatabaseManager {
 "	\"Name\", \"Cost\", \"Description\")\n" +
 "	VALUES (?, ?, ?); INSERT INTO public.\"ProductStock\"(\n" +
 "	\"ProductId\", \"Quantity\")\n" +
-"	VALUES (SELECT MAX(\"Id\") FROM \"Products\", ?);");
+"	VALUES ((SELECT MAX(\"Id\") FROM \"Products\"), 0);");
             st.setString(1, product.getName());
             st.setDouble(2, product.getCost());
             st.setString(3, product.getDescription());
@@ -437,11 +514,10 @@ public class DatabaseManager {
 "	\"Name\", \"Cost\", \"Description\")\n" +
 "	VALUES (?, ?, ?); INSERT INTO public.\"MaterialStock\"(\n" +
 "	\"MaterialId\", \"Quantity\")\n" +
-"	VALUES (SELECT MAX(\"Id\") FROM \"Materials\", ?)");
+"	VALUES ((SELECT MAX(\"Id\") FROM \"Materials\"), 0)");
             st.setString(1, material.getName());
             st.setDouble(2, material.getCost());
             st.setString(3, material.getDescription());
-            st.setInt(4, 0);
             ResultSet rs = st.executeQuery();
             rs.close();
             st.close();
@@ -554,7 +630,7 @@ public class DatabaseManager {
         try {
             sales = new ArrayList<>();
             Statement st = instance.connection.createStatement();
-            ResultSet rs = st.executeQuery(instance.queries.get("Purchases"));
+            ResultSet rs = st.executeQuery(instance.queries.get("Sales"));
             
             while (rs.next())
                 sales.add(new Sale(rs.getInt("Id"), PaymentMethod.get(rs.getInt("PaymentMethodId")), selectClient(rs.getInt("ClientId")), rs.getTimestamp("Date"), Helpers.getProductsFromJson(Helpers.json(rs.getString("Purchased")))));
@@ -633,7 +709,7 @@ public class DatabaseManager {
         return stock;
     }
     
-    public static void updateMaterialStock(int id, int quantity) {
+    public static void updateMaterialStock(int id, int quantity) throws SQLException {
         try {
             PreparedStatement st = instance.connection.prepareStatement("UPDATE public.\"MaterialStock\"\n" +
 "	SET \"Quantity\"=?\n" +
@@ -644,11 +720,11 @@ public class DatabaseManager {
             rs.close();
             st.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
     
-    public static void updateProductStock(int id, int quantity) {
+    public static void updateProductStock(int id, int quantity) throws SQLException {
         try {
             PreparedStatement st = instance.connection.prepareStatement("UPDATE public.\"ProductStock\"\n" +
 "	SET \"Quantity\"=?\n" +
@@ -659,7 +735,7 @@ public class DatabaseManager {
             rs.close();
             st.close();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw e;
         }
     }
     

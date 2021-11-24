@@ -5,6 +5,7 @@
 package application.views;
 
 import application.DesktopApplication;
+import application.logic.DatabaseManager;
 import application.logic.Helpers;
 import application.logic.MySecurityManager;
 import application.logic.Profile;
@@ -284,6 +285,7 @@ public class ProfileMenu extends javax.swing.JPanel {
 
     private void editButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editButtonActionPerformed
         ((CardLayout) this.getLayout()).show(this, "editProfile");
+        this.profileImagePath = this.profile.getPersonel().getImagePath();
     }//GEN-LAST:event_editButtonActionPerformed
 
     private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
@@ -319,6 +321,8 @@ public class ProfileMenu extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
+            
+            this.profile.setPasswordHash(MySecurityManager.getInstance().hash(this.passwordField.getPassword()));
         }
         
         this.profile.setUsername(this.usernameTextField.getText());
@@ -326,8 +330,8 @@ public class ProfileMenu extends javax.swing.JPanel {
         this.profile.getPersonel().setPhoneNumber(Helpers.tryParseInt(this.phoneNumberTextField.getText()));
         this.profile.getPersonel().setBirthDay(this.birthdayChooser.getDate());
         this.profile.getPersonel().setName(this.nameTextField.getText());
-        this.profile.setPasswordHash(MySecurityManager.getInstance().hash(this.passwordField.getPassword()));
         this.profile.getPersonel().setImagePath(this.profileImagePath);
+        DatabaseManager.updateProfile(this.profile);
         this.refresh();
         ((CardLayout) this.getLayout()).show(this, "seeProfile");
     }//GEN-LAST:event_confirmButtonActionPerformed

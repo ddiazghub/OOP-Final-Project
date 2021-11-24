@@ -28,6 +28,19 @@ public class MySecurityManager {
     }
     
     public byte[] hash(char[] password) {
+        KeySpec spec = new PBEKeySpec(password, DatabaseManager.getSalt(), 65536, 128);
+        byte[] hash = {};
+        
+        try {
+            hash = factory.generateSecret(spec).getEncoded();
+        } catch (InvalidKeySpecException e) {
+            e.printStackTrace();
+        }
+        
+        return hash;
+    }
+    
+    public byte[] hash1(char[] password) {
         KeySpec spec = new PBEKeySpec(password, new byte[] {'0'}, 65536, 128);
         byte[] hash = {};
         

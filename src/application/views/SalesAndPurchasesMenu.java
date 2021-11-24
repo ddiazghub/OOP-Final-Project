@@ -9,6 +9,7 @@ import application.components.PurchaseListItem;
 import application.components.PurchasedListItem;
 import application.components.SalesListItem;
 import application.logic.Client;
+import application.logic.DatabaseManager;
 import application.logic.Helpers;
 import application.logic.Material;
 import application.logic.PaymentMethod;
@@ -51,7 +52,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
        
        this.saleClient = null;
        
-       for (Provider provider : DesktopApplication.getInstance().getProviders()) {
+       for (Provider provider : DatabaseManager.selectProviders()) {
            this.providerSelect.addItem(provider);
        }
     }
@@ -60,7 +61,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         this.purchasesPanel.removeAll();
         final SalesAndPurchasesMenu menu = this;
         
-        for (Purchase p : DesktopApplication.getInstance().getPurchases()) {
+        for (Purchase p : DatabaseManager.selectPurchases()) {
             PurchaseListItem item = new PurchaseListItem(p);
             this.purchasesPanel.add(item);
 
@@ -77,7 +78,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
         this.salesPanel.removeAll();
         final SalesAndPurchasesMenu menu = this;
         
-        for (Sale p : DesktopApplication.getInstance().getSales()) {
+        for (Sale p : DatabaseManager.selectSales()) {
             SalesListItem item = new SalesListItem(p);
             this.salesPanel.add(item);
 
@@ -1473,7 +1474,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonMouseReleased
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        DesktopApplication.getInstance().getPurchases().remove(this.purchase);
+        DatabaseManager.removePurchase(this.purchase.getId());
         this.purchase = null;
         ((CardLayout) this.purchasesTab.getLayout()).show(this.purchasesTab, "purchases");
     }//GEN-LAST:event_deleteButtonActionPerformed
@@ -1504,31 +1505,26 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         int option = JOptionPane.showConfirmDialog(null, message, "Añadir Material", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            Boolean exists = false;
-            int id = Helpers.tryParseInt(idField.getText());
+            Material m = DatabaseManager.selectMaterial(Helpers.tryParseInt(idField.getText()));
             int quantity = Helpers.tryParseInt(quantityField.getText());
             
-            for (Material m : DesktopApplication.getInstance().getMaterials()) {
-                if (m.getId() == id) {
-                    PurchasedListItem item = new PurchasedListItem(m, quantity, true);
-                    this.purchasedItemsPanel1.add(item);
-                    final SalesAndPurchasesMenu menu = this;
-                    exists = true;
-                    
-                    item.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mousePressed(MouseEvent evt) {
-                            menu.purchasedListItem1MousePressed(evt);
-                        }
-                    });
-                    
-                    this.purchaseTotalLabel1.setText(Double.toString(this.purchaseTotalFromList(this.purchasedItemsPanel1)));
-                    break;
-                }
+            if (m == null) {
+                JOptionPane.showMessageDialog(this, "El material no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             
-            if (!exists)
-                JOptionPane.showMessageDialog(this, "El material no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            PurchasedListItem item = new PurchasedListItem(m, quantity, true);
+            this.purchasedItemsPanel1.add(item);
+            final SalesAndPurchasesMenu menu = this;
+
+            item.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent evt) {
+                    menu.purchasedListItem1MousePressed(evt);
+                }
+            });
+
+            this.purchaseTotalLabel1.setText(Double.toString(this.purchaseTotalFromList(this.purchasedItemsPanel1)));
         }
     }//GEN-LAST:event_addItemButtonActionPerformed
 
@@ -1537,8 +1533,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        ArrayList<Purchase> purchases = DesktopApplication.getInstance().getPurchases();
-        purchases.add(new Purchase(purchases.size(), this.dateChooser.getDate(), (Provider) this.providerSelect.getSelectedItem(), this.purchaseListToMap(this.purchasedItemsPanel1)));
+        DatabaseManager.insertPurchase(new Purchase(-1, this.dateChooser.getDate(), (Provider) this.providerSelect.getSelectedItem(), this.purchaseListToMap(this.purchasedItemsPanel1)));
         javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido la compra");
         this.getAllPurchases();
         ((CardLayout) this.purchasesTab.getLayout()).show(this.purchasesTab, "purchases");
@@ -1569,7 +1564,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButton1MouseReleased
 
     private void deleteButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButton1ActionPerformed
-        DesktopApplication.getInstance().getSales().remove(this.sale);
+        DatabaseManager.removeSale(this.sale.getId());
         this.sale = null;
         ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "sales");
     }//GEN-LAST:event_deleteButton1ActionPerformed
@@ -1595,8 +1590,7 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_cancelButton1ActionPerformed
 
     private void confirmButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButton1ActionPerformed
-        ArrayList<Sale> sales = DesktopApplication.getInstance().getSales();
-        sales.add(new Sale(sales.size(), PaymentMethod.valueOf((String) this.paymentMethodSelect.getSelectedItem()), this.saleClient, this.dateChooser1.getDate(), this.saleListToMap(this.soldItemsPanel)));
+        DatabaseManager.insertSale(new Sale(-1, PaymentMethod.valueOf((String) this.paymentMethodSelect.getSelectedItem()), this.saleClient, this.dateChooser1.getDate(), this.saleListToMap(this.soldItemsPanel)));
         javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido la venta");
         this.getAllSales();
         ((CardLayout) this.salesTab.getLayout()).show(this.salesTab, "sales");
@@ -1612,31 +1606,26 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
 
         int option = JOptionPane.showConfirmDialog(null, message, "Añadir Producto", JOptionPane.OK_CANCEL_OPTION);
         if (option == JOptionPane.OK_OPTION) {
-            Boolean exists = false;
-            int id = Helpers.tryParseInt(idField.getText());
+            Product product = DatabaseManager.selectProduct(Helpers.tryParseInt(idField.getText()));
             int quantity = Helpers.tryParseInt(quantityField.getText());
             
-            for (Product p : DesktopApplication.getInstance().getProducts()) {
-                if (p.getId() == id) {
-                    PurchasedListItem item = new PurchasedListItem(p, quantity, true);
-                    this.soldItemsPanel.add(item);
-                    final SalesAndPurchasesMenu menu = this;
-                    exists = true;
-                    
-                    item.addMouseListener(new MouseAdapter() {
-                        @Override
-                        public void mousePressed(MouseEvent evt) {
-                            menu.soldListItemMousePressed(evt);
-                        }
-                    });
-                    
-                    this.saleTotalLabel.setText(Double.toString(this.purchaseTotalFromList(this.soldItemsPanel)));
-                    break;
-                }
+            if (product == null) {
+                JOptionPane.showMessageDialog(this, "El material no existe", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
             }
             
-            if (!exists)
-                JOptionPane.showMessageDialog(this, "El material no existe", "Error", JOptionPane.ERROR_MESSAGE);
+            PurchasedListItem item = new PurchasedListItem(product, quantity, true);
+            this.soldItemsPanel.add(item);
+            final SalesAndPurchasesMenu menu = this;
+
+            item.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent evt) {
+                    menu.soldListItemMousePressed(evt);
+                }
+            });
+
+            this.saleTotalLabel.setText(Double.toString(this.purchaseTotalFromList(this.soldItemsPanel)));
         }
     }//GEN-LAST:event_addItemButton1ActionPerformed
 
@@ -1649,24 +1638,17 @@ public class SalesAndPurchasesMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_searchClientButtonMouseReleased
 
     private void searchClientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchClientButtonActionPerformed
-        Client saleClient = null;
+        Client client = DatabaseManager.selectClient(Helpers.tryParseInt(this.clientIdField.getText()));
 
-        for (Client client : DesktopApplication.getInstance().getClients()) {
-            if (client.getId() == Helpers.tryParseInt(this.clientIdField.getText())) {
-                saleClient = client;
-                break;
-            }
-        }
-
-        if (saleClient == null)
+        if (client == null)
         {
             JOptionPane.showMessageDialog(this, "El cliente no existe", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        this.saleClient = saleClient;
+        this.saleClient = client;
         this.clientNameField.setText(this.saleClient.getName());
-        this.confirmButton.setEnabled(true);
+        this.confirmButton1.setEnabled(true);
     }//GEN-LAST:event_searchClientButtonActionPerformed
 
     private void clientNameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clientNameFieldActionPerformed

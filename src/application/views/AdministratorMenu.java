@@ -39,7 +39,7 @@ public class AdministratorMenu extends javax.swing.JPanel {
         this.profilesPanel.removeAll();
         final AdministratorMenu menu = this;
         
-        for (Profile profile : DesktopApplication.getInstance().getProfiles()) {
+        for (Profile profile : DatabaseManager.selectProfiles()) {
             ProfileListItem item = new ProfileListItem(profile);
             this.profilesPanel.add(item);
 
@@ -738,7 +738,7 @@ public class AdministratorMenu extends javax.swing.JPanel {
             return;
         }
         
-        DesktopApplication.getInstance().getProfiles().add(new Profile(this.usernameTextField.getText(), MySecurityManager.getInstance().hash(this.passwordField.getPassword()), this.profileEmployee, ProfileRole.valueOf((String) this.profileRoleSelect.getSelectedItem())));
+        DatabaseManager.insertProfile(new Profile(this.usernameTextField.getText(), MySecurityManager.getInstance().hash(this.passwordField.getPassword()), this.profileEmployee, ProfileRole.valueOf((String) this.profileRoleSelect.getSelectedItem())));
         javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el perfil");
         this.getAllProfiles();
         ((CardLayout) this.getLayout()).show(this, "administratorHome");
@@ -771,7 +771,7 @@ public class AdministratorMenu extends javax.swing.JPanel {
     private void searchEmployeeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchEmployeeButtonActionPerformed
         Personel profilePersonel = null;
         
-        for (Personel employee : DesktopApplication.getInstance().getPersonel()) {
+        for (Personel employee : DatabaseManager.selectPersonel()) {
             if (employee.getId() == Helpers.tryParseInt(this.employeeIdField.getText())) {
                 profilePersonel = employee;
                 break;
@@ -827,7 +827,7 @@ public class AdministratorMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonMouseReleased
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        DesktopApplication.getInstance().getProfiles().remove(this.profile);
+        DatabaseManager.removeProfile(this.profile.getId());
         this.profile = null;
         ((CardLayout) this.getLayout()).show(this, "administratorHome");
     }//GEN-LAST:event_deleteButtonActionPerformed

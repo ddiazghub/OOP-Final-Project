@@ -15,6 +15,7 @@ import java.util.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import application.logic.Client;
+import application.logic.DatabaseManager;
 import java.time.ZoneId;
 import application.logic.Helpers;
 import javax.swing.JFileChooser;
@@ -44,7 +45,7 @@ public class ClientsMenu extends javax.swing.JPanel {
         this.clientsPanel.removeAll();
         final ClientsMenu menu = this;
         
-        for (Client c : DesktopApplication.getInstance().getClients()) {
+        for (Client c : DatabaseManager.selectClients()) {
             ClientListItem item = new ClientListItem(c);
             this.clientsPanel.add(item);
 
@@ -526,8 +527,7 @@ public class ClientsMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_nameTextFieldActionPerformed
 
     private void confirmButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmButtonActionPerformed
-        ArrayList<Client> clients = DesktopApplication.getInstance().getClients();
-        clients.add(new Client(clients.size(), this.addressTextField1.getText(), this.cityTextField.getText(), this.nameTextField.getText(), this.birthdayChooser.getDate(), Helpers.tryParseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText()));
+        DatabaseManager.insertClient(new Client(-1, this.addressTextField1.getText(), this.cityTextField.getText(), this.nameTextField.getText(), this.birthdayChooser.getDate(), Helpers.tryParseInt(this.phoneNumberTextField.getText()), this.emailTextField.getText()));
         ((CardLayout) this.getLayout()).show(this, "clients");
         this.getAllClients();
         javax.swing.JOptionPane.showMessageDialog(null, "Se ha añadido el Cliente");
@@ -538,7 +538,7 @@ public class ClientsMenu extends javax.swing.JPanel {
     }//GEN-LAST:event_deleteButtonMouseReleased
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        DesktopApplication.getInstance().getClients().remove(this.client);
+        DatabaseManager.removeClient(this.client.getId());
         this.client = null;
         ((CardLayout) this.getLayout()).show(this, "clients");
     }//GEN-LAST:event_deleteButtonActionPerformed
